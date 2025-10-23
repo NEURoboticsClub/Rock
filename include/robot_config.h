@@ -80,18 +80,18 @@ static AutonConstants hsky1AutonConstants = {
 };
 
 static DrivebaseConfig hsky1Drivebase = {
-	{-12, -11, 13},			{2, 1, -3}, pros::E_MOTOR_BRAKE_COAST,
+	{1, 2, 11, 12},			{-16, -17, -18, -19}, pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
 	hsky1AutonConstants};
 
-static TransportConfig hsky1Intake = {{21, -18},
+static TransportConfig hsky1Intake = {{5, 6},
 									  pros::E_MOTOR_BRAKE_COAST,
 									  pros::E_MOTOR_GEAR_600,
 									  pros::E_CONTROLLER_DIGITAL_L1,
 									  pros::E_CONTROLLER_DIGITAL_L2,
 									  1.0};
 
-static TransportConfig hsky1Scoring = {{15, -16},
+static TransportConfig hsky1Scoring = {{4, -3},
 									   pros::E_MOTOR_BRAKE_COAST,
 									   pros::E_MOTOR_GEAR_600,
 									   pros::E_CONTROLLER_DIGITAL_R1,
