@@ -37,12 +37,12 @@ void OdometryThreeWheel::updatePose() {
 	uint32_t rightEncoderNewPos = rightEncoder.get_position();
 	uint32_t centerEncoderNewPos = centerEncoder.get_position();
 	double dL =
-		(((double)leftEncoderNewPos - (double)leftEncoderLastPos) / 36000.0) *
+		((static_cast<double>(leftEncoderNewPos) - static_cast<double>(leftEncoderLastPos)) / 36000.0) *
 		6.28318;
 	double dR =
-		(((double)rightEncoderNewPos - (double)rightEncoderLastPos) / 36000.0) *
+		((static_cast<double>(rightEncoderNewPos) - static_cast<double>(rightEncoderLastPos)) / 36000.0) *
 		6.28318;
-	double dC = (((double)centerEncoderNewPos - (double)centerEncoderLastPos) /
+	double dC = ((static_cast<double>(centerEncoderNewPos) - static_cast<double>(centerEncoderLastPos)) /
 				 36000.0) *
 				6.28318;
 	double deltaThetaRad = (dL - dR) / (sL + sR);

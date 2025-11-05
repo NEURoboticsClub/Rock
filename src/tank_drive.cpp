@@ -55,16 +55,16 @@ void TankDrive::runAuton() {
 				pidCtrlMove->compute(*setPoint, currentPose);
 			printf("move: %f\n", moveComputation);
 			pidValMove =
-				std::clamp(moveComputation, ((double)maxMotorMag * -1.0 * 0.5),
-						   ((double)maxMotorMag * 0.5));
+				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
+						   (static_cast<double>(maxMotorMag) * 0.5));
 		}
 		if (pidMode == TURNING || pidMode == COMBINED) {
 			double turnComputation =
 				pidCtrlTurn->compute(setPoint->theta, currentPose.theta);
 			printf("turn: %f\n", turnComputation);
 			pidValTurn =
-				std::clamp(turnComputation, ((double)maxMotorMag * -1.0 * 0.5),
-						   ((double)maxMotorMag * 0.5));
+				std::clamp(turnComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
+						   (static_cast<double>(maxMotorMag) * 0.5));
 		}
 
 		int16_t motorValLeft = pidValMove - pidValTurn;
@@ -118,15 +118,15 @@ void TankDrive::tankDrive() {
 			(scaleControllerInput(
 				 controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)) /
 			 127.0) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)leftMotorGroup.get_gearing()) *
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)leftMotorGroup.get_gearing())) *
 			speedMultiplier;
 		double rightSpeed =
 			(scaleControllerInput(
 				 controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)) /
 			 127.0) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)rightMotorGroup.get_gearing()) *
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)rightMotorGroup.get_gearing())) *
 			speedMultiplier;
 
 		leftMotorGroup.move((int)leftSpeed);
@@ -150,12 +150,12 @@ void TankDrive::arcadeDrive() {
 
 		double leftSpeed =
 			(forwardInput + turnInput) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)leftMotorGroup.get_gearing());
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)leftMotorGroup.get_gearing()));
 		double rightSpeed =
 			(forwardInput - turnInput) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)rightMotorGroup.get_gearing());
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)rightMotorGroup.get_gearing()));
 
 		rightMotorGroup.move((int)rightSpeed);
 		leftMotorGroup.move((int)leftSpeed);
