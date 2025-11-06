@@ -1,21 +1,62 @@
 #include "api.h"
 
+/**
+ * A base class representing a command for the robot to execute.
+ */
 class Command {
 public:
-    virtual void execute() {}
-    virtual bool isFinished() {}
-    ~Command() {}
+    /**
+     * Initializes the command. This should be a non-blocking implementation.
+     */
+    void initialize() {}
+
+    /**
+     * Executes the command. This should be a blocking implementation.
+     */
+    void execute() {}
+
+    /**
+     * Checks if the command has finished executing. This should be a non-blocking
+     * implementation.
+     * 
+     * @return true if the command is finished, false otherwise.
+     */
+    bool isFinished() {}
+
+    /**
+     * Cleans up after the command has finished executing.
+     */
+    bool end() {}
 };
 
-class WaitCommand : public Command {
-public:
-    WaitCommand(int duration) : duration(duration) {}
+/**
+ * A command that runs a sequence of commands in order.
+ */
+class SequentialCommandGroup : public Command {
+    public:
+    /**
+     * Constructs a SequentialCommandGroup with a list of commands to run in sequence.
+     * 
+     * @param commands A vector of Command objects to be executed in sequence.
+     */
+        SequentialCommandGroup(std::vector<Command> commands) : commands(commands) {}
 
-    void execute() override {}
+    private:
+        std::vector<Command> commands;
+};
 
-    bool isFinished() override {}
+/**
+ * A command that runs multiple commands in parallel.
+ */
+class ParallelCommandGroup : public Command {
+    public:
+        /**
+         * Constructs a ParallelCommandGroup with a list of commands to run in parallel.
+         * 
+         * @param commands A vector of Command objects to be executed in parallel.
+         */
+        ParallelCommandGroup(std::vector<Command> commands) : commands(commands) {}
 
-private:
-    int duration;
-    // vex::timer timer;
+    private:
+        std::vector<Command> commands;
 };
