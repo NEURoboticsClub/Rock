@@ -1,5 +1,8 @@
 #include "commands/command_runner.h"
 
+CommandRunner::CommandRunner(std::queue<Command*> commands)
+    : commands(commands), currentTask(nullptr), currentCommand(nullptr) {}
+
 void CommandRunner::run() {
     while (!commands.empty()) {
         currentCommand = commands.front();

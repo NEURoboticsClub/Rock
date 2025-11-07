@@ -106,6 +106,8 @@ void ParallelCommandGroup::end() {
         task->remove();
         delete task;
     }
+
+    currentTasks.clear();
 }
 
 ParallelCommandGroup::~ParallelCommandGroup() {

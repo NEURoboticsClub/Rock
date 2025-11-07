@@ -13,8 +13,7 @@ public:
      * 
      * @param commands A queue of Commands to be executed in sequence.
      */
-    CommandRunner(std::queue<Command*> commands) : commands(commands) {}
-
+    CommandRunner(std::queue<Command*> commands);
     /**
      * Runs the commands in sequence.
      */
