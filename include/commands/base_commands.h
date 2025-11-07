@@ -72,7 +72,7 @@ class SequentialCommandGroup : public Command {
     private:
         std::queue<Command*> commands;
         pros::Task* currentTask;
-        Command* currentCommand;  // Pointer instead of reference
+        Command* currentCommand;
 };
 
 /**

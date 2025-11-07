@@ -16,9 +16,9 @@ void CommandRunner::run() {
             pros::delay(10);
         }
 
-        currentCommand->end();
         currentTask->remove();
         delete currentTask;
+        currentCommand->end();
         commands.pop();
     }
     delete currentCommand;
@@ -27,6 +27,7 @@ void CommandRunner::run() {
 CommandRunner::~CommandRunner() {
     if (currentCommand != nullptr) {
         currentCommand->end();
+        delete currentCommand;
     }
     if (currentTask != nullptr) {
         currentTask->remove();

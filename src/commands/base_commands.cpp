@@ -39,9 +39,9 @@ void SequentialCommandGroup::execute() {
             pros::delay(10);
         }
 
-        currentCommand->end();
         currentTask->remove();
         delete currentTask;
+        currentCommand->end();
         commands.pop();
 
         if (commands.empty()) {
@@ -57,12 +57,12 @@ bool SequentialCommandGroup::isFinished() {
 }
 
 void SequentialCommandGroup::end() {
-    if (currentCommand != nullptr) {
-        currentCommand->end();
-    }
     if (currentTask != nullptr) {
         currentTask->remove();
         delete currentTask;
+    }
+    if (currentCommand != nullptr) {
+        currentCommand->end();
     }
 }
 
@@ -99,12 +99,12 @@ bool ParallelCommandGroup::isFinished() {
 }
 
 void ParallelCommandGroup::end() {
-    for (Command* command : commands) {
-        command->end();
-    }
     for (pros::Task* task : currentTasks) {
         task->remove();
         delete task;
+    }
+    for (Command* command : commands) {
+        command->end();
     }
 
     currentTasks.clear();
@@ -112,6 +112,9 @@ void ParallelCommandGroup::end() {
 
 ParallelCommandGroup::~ParallelCommandGroup() {
     end();
+    for (Command* command : commands) {
+        delete command;
+    }
 }
 
 // InstantCommand implementation
