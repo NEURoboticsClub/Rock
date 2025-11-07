@@ -67,7 +67,7 @@ class SequentialCommandGroup : public Command {
         bool isFinished() override;
         void end() override;
 
-        ~SequentialCommandGroup() override;
+        ~SequentialCommandGroup();
 
     private:
         std::queue<Command*> commands;
