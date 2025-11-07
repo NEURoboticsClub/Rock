@@ -44,6 +44,9 @@ void SequentialCommandGroup::execute() {
         delete currentTask;
         commands.pop();
 
+        if (commands.empty()) {
+            break;
+        }
         currentCommand = commands.front();
         currentCommand->initialize();
     }
@@ -51,6 +54,16 @@ void SequentialCommandGroup::execute() {
 
 bool SequentialCommandGroup::isFinished() {
     return commands.empty();
+}
+
+void SequentialCommandGroup::end() {
+    if (currentCommand != nullptr) {
+        currentCommand->end();
+    }
+    if (currentTask != nullptr) {
+        currentTask->remove();
+        delete currentTask;
+    }
 }
 
 // ParallelCommandGroup implementation
