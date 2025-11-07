@@ -35,6 +35,23 @@ class Command {
         virtual ~Command() = default;
 };
 
+class TimeoutCommand : public Command {
+    public:
+        /**
+         * Constructs a TimeoutCommand with a specified duration.
+         * 
+         * @param durationMs The duration in milliseconds after which the command should time out.
+         */
+        TimeoutCommand(std::uint32_t durationMs);
+
+        void initialize() override;
+        bool isFinished() override;
+
+    private:
+        std::uint32_t durationMs;
+        std::uint32_t startTime;
+};
+
 /**
  * A command that runs a sequence of commands in order.
  */
@@ -45,7 +62,7 @@ class SequentialCommandGroup : public Command {
          * 
          * @param commands A vector of Command objects to be executed in sequence.
          */
-        SequentialCommandGroup(std::queue<Command> commands) : commands(commands), currentTask(nullptr), currentCommand(nullptr) {}
+        SequentialCommandGroup(std::queue<Command> commands);
 
         void initialize() override;
         void execute() override;
@@ -68,7 +85,7 @@ class ParallelCommandGroup : public Command {
          * 
          * @param commands A vector of Command objects to be executed in parallel.
          */
-        ParallelCommandGroup(std::vector<Command> commands) : commands(commands) {}
+        ParallelCommandGroup(std::vector<Command> commands);
 
         void initialize() override;
         void execute() override;
@@ -78,4 +95,19 @@ class ParallelCommandGroup : public Command {
     private:
         std::vector<Command> commands;
         std::vector<pros::Task*> currentTasks;
+};
+
+class InstantCommand : public Command {
+    public:
+        /**
+         * Constructs an InstantCommand with a callable action.
+         * 
+         * @param action A callable object (e.g., lambda function) to be executed instantly.
+         */
+        InstantCommand(std::function<void()> action);
+
+        void initialize() override;
+
+    private:
+        std::function<void()> action;
 };

@@ -6,7 +6,21 @@ void Command::execute() {}
 bool Command::isFinished() { return true; }
 void Command::end() {}
 
+// TimeoutCommand implementation
+TimeoutCommand::TimeoutCommand(std::uint32_t durationMs) : durationMs(durationMs), startTime(0) {}
+
+void TimeoutCommand::initialize() {
+    startTime = pros::millis();
+}
+
+bool TimeoutCommand::isFinished() {
+    return (pros::millis() - startTime) >= durationMs;
+}
+
 // SequentialCommandGroup implementation
+SequentialCommandGroup::SequentialCommandGroup(std::queue<Command> commands)
+    : commands(commands), currentTask(nullptr), currentCommand(nullptr) {}
+
 void SequentialCommandGroup::initialize() {
     if (commands.empty()) {
         return;
@@ -43,6 +57,9 @@ void SequentialCommandGroup::end() {
 }
 
 // ParallelCommandGroup implementation
+ParallelCommandGroup::ParallelCommandGroup(std::vector<Command> commands)
+    : commands(commands) {}
+
 void ParallelCommandGroup::initialize() {
     for (Command& command : commands) {
         command.initialize();
@@ -75,4 +92,11 @@ void ParallelCommandGroup::end() {
         task->remove();
         delete task;
     }
+}
+
+// InstantCommand implementation
+InstantCommand::InstantCommand(std::function<void()> action) : action(action) {}
+
+void InstantCommand::initialize() {
+    action();
 }
