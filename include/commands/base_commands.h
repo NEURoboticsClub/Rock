@@ -1,4 +1,7 @@
+#pragma once
 #include "api.h"
+#include <queue>
+#include <vector>
 
 /**
  * A base class representing a command for the robot to execute.
@@ -8,12 +11,12 @@ class Command {
         /**
          * Initializes the command. This should be a one-time setup implementation.
          */
-        void initialize() {}
+        virtual void initialize();
 
         /**
          * Executes the command. This should be a blocking implementation.
          */
-        void execute() {}
+        virtual void execute();
 
         /**
          * Checks if the command has finished executing. This should be a non-blocking
@@ -21,13 +24,15 @@ class Command {
          * 
          * @return true if the command is finished, false otherwise.
          */
-        virtual bool isFinished() {}
+        virtual bool isFinished();
 
         /**
          * Cleans up after the command has finished executing. This should be a one-time
          * implementation.
          */
-        bool end() {}
+        virtual void end();
+
+        virtual ~Command() = default;
 };
 
 /**
@@ -35,15 +40,22 @@ class Command {
  */
 class SequentialCommandGroup : public Command {
     public:
-    /**
-     * Constructs a SequentialCommandGroup with a list of commands to run in sequence.
-     * 
-     * @param commands A vector of Command objects to be executed in sequence.
-     */
-        SequentialCommandGroup(std::vector<Command> commands) : commands(commands) {}
+        /**
+         * Constructs a SequentialCommandGroup with a list of commands to run in sequence.
+         * 
+         * @param commands A vector of Command objects to be executed in sequence.
+         */
+        SequentialCommandGroup(std::queue<Command> commands) : commands(commands), currentTask(nullptr), currentCommand(nullptr) {}
+
+        void initialize() override;
+        void execute() override;
+        bool isFinished() override;
+        void end() override;
 
     private:
-        std::vector<Command> commands;
+        std::queue<Command> commands;
+        pros::Task* currentTask;
+        Command* currentCommand;  // Pointer instead of reference
 };
 
 /**
@@ -58,6 +70,12 @@ class ParallelCommandGroup : public Command {
          */
         ParallelCommandGroup(std::vector<Command> commands) : commands(commands) {}
 
+        void initialize() override;
+        void execute() override;
+        bool isFinished() override;
+        void end() override;
+
     private:
         std::vector<Command> commands;
+        std::vector<pros::Task*> currentTasks;
 };

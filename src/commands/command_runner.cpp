@@ -3,7 +3,7 @@
 void CommandRunner::run() {
     pros::Task* currentTask;
     while (!commands.empty()) {
-        Command currentCommand = commands.front();
+        Command& currentCommand = commands.front();
 
         currentCommand.initialize();
         currentTask = new pros::Task([&currentCommand]() {

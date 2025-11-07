@@ -1,3 +1,4 @@
+#pragma once
 #include "api.h"
 #include "commands/base_commands.h"
 #include <queue>
@@ -17,7 +18,7 @@ public:
     /**
      * Runs the commands in sequence.
      */
-    void run() {}
+    void run();
 
 private:
     std::queue<Command> commands;
