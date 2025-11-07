@@ -4,29 +4,30 @@
  * A base class representing a command for the robot to execute.
  */
 class Command {
-public:
-    /**
-     * Initializes the command. This should be a non-blocking implementation.
-     */
-    void initialize() {}
+    public:
+        /**
+         * Initializes the command. This should be a one-time setup implementation.
+         */
+        void initialize() {}
 
-    /**
-     * Executes the command. This should be a blocking implementation.
-     */
-    void execute() {}
+        /**
+         * Executes the command. This should be a blocking implementation.
+         */
+        void execute() {}
 
-    /**
-     * Checks if the command has finished executing. This should be a non-blocking
-     * implementation.
-     * 
-     * @return true if the command is finished, false otherwise.
-     */
-    bool isFinished() {}
+        /**
+         * Checks if the command has finished executing. This should be a non-blocking
+         * implementation.
+         * 
+         * @return true if the command is finished, false otherwise.
+         */
+        virtual bool isFinished() {}
 
-    /**
-     * Cleans up after the command has finished executing.
-     */
-    bool end() {}
+        /**
+         * Cleans up after the command has finished executing. This should be a one-time
+         * implementation.
+         */
+        bool end() {}
 };
 
 /**
