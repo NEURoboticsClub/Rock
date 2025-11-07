@@ -21,5 +21,7 @@ bool DriveDistance::isFinished() {
 }
 
 void DriveDistance::end() {
-    drive->driveDistance(0); // Stop the drive
+    Pose currentPose;
+    odom->getPose(&currentPose);
+    drive->driveToPose(&currentPose); // Stop the drive
 }

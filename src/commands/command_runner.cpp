@@ -3,20 +3,20 @@
 void CommandRunner::run() {
     pros::Task* currentTask;
     while (!commands.empty()) {
-        Command& currentCommand = commands.front();
+        Command* currentCommand = commands.front();
 
-        currentCommand.initialize();
+        currentCommand->initialize();
         currentTask = new pros::Task([&currentCommand]() {
-            currentCommand.execute();
+            currentCommand->execute();
         });
 
-        while (!currentCommand.isFinished()) {
+        while (!currentCommand->isFinished()) {
             pros::delay(10);
         }
 
-        currentCommand.end();
+        currentCommand->end();
         currentTask->remove();
+        delete currentTask;
         commands.pop();
     }
-    delete currentTask;
 }

@@ -60,17 +60,16 @@ class SequentialCommandGroup : public Command {
         /**
          * Constructs a SequentialCommandGroup with a list of commands to run in sequence.
          * 
-         * @param commands A vector of Command objects to be executed in sequence.
+         * @param commands A queue of Command objects to be executed in sequence.
          */
-        SequentialCommandGroup(std::queue<Command> commands);
+        SequentialCommandGroup(std::queue<Command*> commands);
 
         void initialize() override;
         void execute() override;
         bool isFinished() override;
-        void end() override;
 
     private:
-        std::queue<Command> commands;
+        std::queue<Command*> commands;
         pros::Task* currentTask;
         Command* currentCommand;  // Pointer instead of reference
 };
@@ -85,7 +84,7 @@ class ParallelCommandGroup : public Command {
          * 
          * @param commands A vector of Command objects to be executed in parallel.
          */
-        ParallelCommandGroup(std::vector<Command> commands);
+        ParallelCommandGroup(std::vector<Command*> commands);
 
         void initialize() override;
         void execute() override;
@@ -93,7 +92,7 @@ class ParallelCommandGroup : public Command {
         void end() override;
 
     private:
-        std::vector<Command> commands;
+        std::vector<Command*> commands;
         std::vector<pros::Task*> currentTasks;
 };
 

@@ -18,22 +18,19 @@ bool TimeoutCommand::isFinished() {
 }
 
 // SequentialCommandGroup implementation
-SequentialCommandGroup::SequentialCommandGroup(std::queue<Command> commands)
+SequentialCommandGroup::SequentialCommandGroup(std::queue<Command*> commands)
     : commands(commands), currentTask(nullptr), currentCommand(nullptr) {}
 
 void SequentialCommandGroup::initialize() {
     if (commands.empty()) {
         return;
     }
-    Command currentCommand = commands.front();
-    currentCommand.initialize();
+    currentCommand = commands.front();
+    currentCommand->initialize();
 }
 
 void SequentialCommandGroup::execute() {
     while (!commands.empty()) {
-        currentCommand = &commands.front();
-
-        currentCommand->initialize();
         currentTask = new pros::Task([this]() {
             currentCommand->execute();
         });
@@ -44,7 +41,11 @@ void SequentialCommandGroup::execute() {
 
         currentCommand->end();
         currentTask->remove();
+        delete currentTask;
         commands.pop();
+
+        currentCommand = commands.front();
+        currentCommand->initialize();
     }
 }
 
@@ -52,32 +53,28 @@ bool SequentialCommandGroup::isFinished() {
     return commands.empty();
 }
 
-void SequentialCommandGroup::end() {
-    delete currentTask;
-}
-
 // ParallelCommandGroup implementation
-ParallelCommandGroup::ParallelCommandGroup(std::vector<Command> commands)
+ParallelCommandGroup::ParallelCommandGroup(std::vector<Command*> commands)
     : commands(commands) {}
 
 void ParallelCommandGroup::initialize() {
-    for (Command& command : commands) {
-        command.initialize();
+    for (Command* command : commands) {
+        command->initialize();
     }
 }
 
 void ParallelCommandGroup::execute() {
-    for (Command& command : commands) {
-        pros::Task* task = new pros::Task([&command]() {
-            command.execute();
+    for (Command* command : commands) {
+        pros::Task* task = new pros::Task([command]() {
+            command->execute();
         });
         currentTasks.push_back(task);
     }
 }
 
 bool ParallelCommandGroup::isFinished() {
-    for (Command& command : commands) {
-        if (!command.isFinished()) {
+    for (Command* command : commands) {
+        if (!command->isFinished()) {
             return false;
         }
     }
@@ -85,8 +82,8 @@ bool ParallelCommandGroup::isFinished() {
 }
 
 void ParallelCommandGroup::end() {
-    for (Command& command : commands) {
-        command.end();
+    for (Command* command : commands) {
+        command->end();
     }
     for (pros::Task* task : currentTasks) {
         task->remove();

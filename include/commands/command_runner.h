@@ -11,9 +11,9 @@ public:
     /**
      * Constructs a CommandRunner with a queue of commands.
      * 
-     * @param commands A queue of Command objects to be executed in sequence.
+     * @param commands A queue of Commands to be executed in sequence.
      */
-    CommandRunner(std::queue<Command> commands) : commands(commands) {}
+    CommandRunner(std::queue<Command*> commands) : commands(commands) {}
 
     /**
      * Runs the commands in sequence.
@@ -21,5 +21,5 @@ public:
     void run();
 
 private:
-    std::queue<Command> commands;
+    std::queue<Command*> commands;
 };
