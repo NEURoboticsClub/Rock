@@ -66,6 +66,10 @@ void SequentialCommandGroup::end() {
     }
 }
 
+SequentialCommandGroup::~SequentialCommandGroup() {
+     end();
+}
+
 // ParallelCommandGroup implementation
 ParallelCommandGroup::ParallelCommandGroup(std::vector<Command*> commands)
     : commands(commands) {}
@@ -102,6 +106,10 @@ void ParallelCommandGroup::end() {
         task->remove();
         delete task;
     }
+}
+
+ParallelCommandGroup::~ParallelCommandGroup() {
+    end();
 }
 
 // InstantCommand implementation

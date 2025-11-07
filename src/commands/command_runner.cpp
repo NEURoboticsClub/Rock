@@ -1,12 +1,11 @@
 #include "commands/command_runner.h"
 
 void CommandRunner::run() {
-    pros::Task* currentTask;
     while (!commands.empty()) {
-        Command* currentCommand = commands.front();
+        currentCommand = commands.front();
 
         currentCommand->initialize();
-        currentTask = new pros::Task([&currentCommand]() {
+        currentTask = new pros::Task([this]() {
             currentCommand->execute();
         });
 
@@ -18,5 +17,16 @@ void CommandRunner::run() {
         currentTask->remove();
         delete currentTask;
         commands.pop();
+    }
+    delete currentCommand;
+}
+
+CommandRunner::~CommandRunner() {
+    if (currentCommand != nullptr) {
+        currentCommand->end();
+    }
+    if (currentTask != nullptr) {
+        currentTask->remove();
+        delete currentTask;
     }
 }

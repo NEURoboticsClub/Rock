@@ -20,6 +20,10 @@ public:
      */
     void run();
 
+    ~CommandRunner();
+
 private:
     std::queue<Command*> commands;
+    pros::Task* currentTask;
+    Command* currentCommand;
 };

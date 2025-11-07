@@ -31,8 +31,6 @@ class Command {
          * implementation.
          */
         virtual void end();
-
-        virtual ~Command() = default;
 };
 
 class TimeoutCommand : public Command {
@@ -69,6 +67,8 @@ class SequentialCommandGroup : public Command {
         bool isFinished() override;
         void end() override;
 
+        ~SequentialCommandGroup() override;
+
     private:
         std::queue<Command*> commands;
         pros::Task* currentTask;
@@ -91,6 +91,8 @@ class ParallelCommandGroup : public Command {
         void execute() override;
         bool isFinished() override;
         void end() override;
+
+        ~ParallelCommandGroup();
 
     private:
         std::vector<Command*> commands;
