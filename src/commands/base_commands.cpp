@@ -68,6 +68,10 @@ void SequentialCommandGroup::end() {
 
 SequentialCommandGroup::~SequentialCommandGroup() {
      end();
+     while (!commands.empty()) {
+         delete commands.front();
+         commands.pop();
+     }
 }
 
 // ParallelCommandGroup implementation
