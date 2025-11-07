@@ -5,7 +5,6 @@ DriveDistance::DriveDistance(TankDrive &drive, Odometry &odom, double distanceIn
     : drive(&drive), odom(&odom), distanceInches(distanceInches) {}
 
 void DriveDistance::initialize() {
-    finished = false;
     drive->driveDistance(distanceInches);
 }
 

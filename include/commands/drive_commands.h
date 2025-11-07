@@ -22,7 +22,6 @@ class DriveDistance : public Command {
     TankDrive *drive;
     Odometry *odom;
     double distanceInches;
-    bool finished = false;
 };
 
 // TODO: Add more drive commands
