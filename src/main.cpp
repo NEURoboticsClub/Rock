@@ -56,12 +56,13 @@ void opcontrol() {
 	printf("starting opcontrol");
 
 	tankdrive.initialize(config.drivebase.driveStyle);
-
 	intake.initialize();
-
+	centerStageLower.initialize();
+	centerStageUpper.initialize();
+	hood.initialize();
+	intakeLeft.initialize();
+	intakeRight.initialize();
 	scoring.initialize();
-
-	mogoClamp.initialize();
 
 	while (true) {
 		pros::delay(50);

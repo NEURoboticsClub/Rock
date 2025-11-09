@@ -28,8 +28,8 @@ struct AutonConstants {
 };
 
 struct DrivebaseConfig {
-	std::vector<int8_t> brainside;
-	std::vector<int8_t> batteryside;
+	std::vector<int8_t> brainside; // left
+	std::vector<int8_t> batteryside; // right
 	pros::motor_brake_mode_e brakeMode;
 	pros::motor_gearset_e gearset;
 	DriveStyle driveStyle;
@@ -55,8 +55,12 @@ struct PneumaticsConfig {
 struct RobotConfig {
 	DrivebaseConfig drivebase;
 	TransportConfig intake;
-	TransportConfig scoring;
-	PneumaticsConfig mogoClamp;
+	TransportConfig centerStageLower;
+	TransportConfig centerStageUpper;
+	TransportConfig hood;
+	PneumaticsConfig intakeLeft;
+	PneumaticsConfig intakeRight;
+	PneumaticsConfig scoring;
 };
 
 static AutonConstants hsky1AutonConstants = {
@@ -80,29 +84,79 @@ static AutonConstants hsky1AutonConstants = {
 };
 
 static DrivebaseConfig hsky1Drivebase = {
-	{1, 2, 11, 12},			{-16, -17, -18, -19}, pros::E_MOTOR_BRAKE_COAST,
-	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
-	hsky1AutonConstants};
+	{-6, 9, -8, -11}, // left
+	{-16, 17, 14, 13}, // right
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	ARCADE,
+	0.75,
+	hsky1AutonConstants
+};
 
-static TransportConfig hsky1Intake = {{5, 6},
-									  pros::E_MOTOR_BRAKE_COAST,
-									  pros::E_MOTOR_GEAR_600,
-									  pros::E_CONTROLLER_DIGITAL_L1,
-									  pros::E_CONTROLLER_DIGITAL_L2,
-									  1.0};
+static TransportConfig hsky1Intake = {
+	{-2, 20, -18}, // left, right, roller
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.75 // duty cycle
+};
 
-static TransportConfig hsky1Scoring = {{4, -3},
-									   pros::E_MOTOR_BRAKE_COAST,
-									   pros::E_MOTOR_GEAR_600,
-									   pros::E_CONTROLLER_DIGITAL_R1,
-									   pros::E_CONTROLLER_DIGITAL_R2,
-									   0.25};
+static TransportConfig hsky1CenterStageLower = {
+	{19}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.75 // duty cycle
+};
 
-static PneumaticsConfig hsky1MogoClamp = {'a', pros::E_CONTROLLER_DIGITAL_B,
-										  pros::E_CONTROLLER_DIGITAL_X};
+static TransportConfig hsky1CenterStageUpper = {
+	{-1}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.75 // duty cycle
+};
 
-static RobotConfig hsky1Config = {hsky1Drivebase, hsky1Intake, hsky1Scoring,
-								  hsky1MogoClamp};
+static TransportConfig hsky1Hood = {
+	{-3}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_R1, // up
+	pros::E_CONTROLLER_DIGITAL_R2, // down
+	0.75 // duty cycle
+};
+
+static PneumaticsConfig hsky1IntakeLeft = {
+	'a', // port
+	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
+	pros::E_CONTROLLER_DIGITAL_LEFT // retract
+};
+
+static PneumaticsConfig hsky1IntakeRight = {
+	'b', // port
+	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
+	pros::E_CONTROLLER_DIGITAL_LEFT // retract
+};
+
+static PneumaticsConfig hsky1Scoring = {
+	'c', // port
+	pros::E_CONTROLLER_DIGITAL_UP, // extend
+	pros::E_CONTROLLER_DIGITAL_DOWN // retract
+};
+
+static RobotConfig hsky1Config = {
+	hsky1Drivebase,
+	hsky1Intake,
+	hsky1CenterStageLower,
+	hsky1CenterStageUpper,
+	hsky1Hood,
+	hsky1IntakeLeft,
+	hsky1IntakeRight,
+	hsky1Scoring
+};
 
 static AutonConstants hsky2AutonConstants = {
 	3.25,
@@ -125,28 +179,17 @@ static AutonConstants hsky2AutonConstants = {
 };
 
 static DrivebaseConfig hsky2Drivebase = {
-	{-10, -1, 18},			{4, 5, -2}, pros::E_MOTOR_BRAKE_COAST,
-	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
-	hsky2AutonConstants};
+	{-10, -1, 18},
+	{4, 5, -2},
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	ARCADE,
+	0.25,
+	hsky2AutonConstants
+};
 
-static TransportConfig hsky2Intake = {{-16, 6},
-									  pros::E_MOTOR_BRAKE_COAST,
-									  pros::E_MOTOR_GEAR_600,
-									  pros::E_CONTROLLER_DIGITAL_L1,
-									  pros::E_CONTROLLER_DIGITAL_L2,
-									  1.0};
-
-static TransportConfig hsky2Scoring = {{9, -14},
-									   pros::E_MOTOR_BRAKE_COAST,
-									   pros::E_MOTOR_GEAR_600,
-									   pros::E_CONTROLLER_DIGITAL_R1,
-									   pros::E_CONTROLLER_DIGITAL_R2,
-									   0.25};
-
-static PneumaticsConfig hsky2MogoClamp = {'a', pros::E_CONTROLLER_DIGITAL_X,
-										  pros::E_CONTROLLER_DIGITAL_B};
-
-static RobotConfig hsky2Config = {hsky2Drivebase, hsky2Intake, hsky2Scoring,
-								  hsky2MogoClamp};
+static RobotConfig hsky2Config = {
+	
+};
 
 #endif
