@@ -84,8 +84,8 @@ static AutonConstants hsky1AutonConstants = {
 };
 
 static DrivebaseConfig hsky1Drivebase = {
-	{-6, 9, -8, -11}, // left
-	{-16, 17, 14, 13}, // right
+	{-6, 9, -8, 11}, // left
+	{-16, 17, -14, 13}, // right
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	ARCADE,
@@ -117,7 +117,7 @@ static TransportConfig hsky1CenterStageUpper = {
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
 	pros::E_CONTROLLER_DIGITAL_L2, // down
-	0.75 // duty cycle
+	0.25 // duty cycle
 };
 
 static TransportConfig hsky1Hood = {
