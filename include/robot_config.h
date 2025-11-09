@@ -121,7 +121,7 @@ static TransportConfig hsky1CenterStageUpper = {
 };
 
 static TransportConfig hsky1Hood = {
-	{-3}, // motor ports
+	{-4}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_R1, // up
