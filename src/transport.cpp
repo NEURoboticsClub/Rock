@@ -16,15 +16,15 @@ Transport::Transport(TransportConfig config, pros::Controller &ctrl)
 
 void Transport::moveIn() {
 	int speed =
-		(motorDutyCycle * (double)getInputExtremeForGearset(
-							  (pros::motor_gearset_e)motors.get_gearing()));
+		(motorDutyCycle * static_cast<double>(getInputExtremeForGearset(
+							  (pros::motor_gearset_e)motors.get_gearing())));
 	motors.move(speed);
 }
 
 void Transport::moveOut() {
 	int speed =
-		(motorDutyCycle * (double)getInputExtremeForGearset(
-							  (pros::motor_gearset_e)motors.get_gearing()));
+		(motorDutyCycle * static_cast<double>(getInputExtremeForGearset(
+							  (pros::motor_gearset_e)motors.get_gearing())));
 	motors.move(-speed);
 }
 
