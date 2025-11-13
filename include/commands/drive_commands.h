@@ -2,26 +2,30 @@
 #include "base_commands.h"
 #include "tank_drive.h"
 
-class DriveDistance : public Command {
+class DriveDeadReckon : public Command {
   public:
     /**
-     * Constructs a DriveDistance command with specified parameters.
+     * Constructs a DriveDeadReckon command with specified parameters.
      * 
      * @param drive Reference to the TankDrive object to control the robot's movement.
      * @param odom Reference to the Odometry object to track the robot's position.
-     * @param distanceInches The distance in inches the robot should drive forward.
+     * @param leftSpeed The speed for the left motors.
+     * @param rightSpeed The speed for the right motors.
+     * @param durationMs The duration in milliseconds to drive at the specified speeds.
      */
-    DriveDistance(TankDrive &drive, Odometry &odom, double distanceInches);
+    DriveDeadReckon(TankDrive &drive, Odometry &odom, int leftSpeed, int rightSpeed, int durationMs);
 
     void initialize() override;
-    void execute() override;
     bool isFinished() override;
     void end() override;
 
   private:
     TankDrive *drive;
     Odometry *odom;
-    double distanceInches;
+    int leftSpeed;
+    int rightSpeed;
+    int durationMs;
+    std::uint32_t startTime;
 };
 
 // TODO: Add more drive commands

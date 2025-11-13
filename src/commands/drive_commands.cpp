@@ -1,27 +1,20 @@
 #include "commands/drive_commands.h"
 
 // NOTE: This is an example of how we can implement commands.
-DriveDistance::DriveDistance(TankDrive &drive, Odometry &odom, double distanceInches)
-    : drive(&drive), odom(&odom), distanceInches(distanceInches) {}
+DriveDeadReckon::DriveDeadReckon(TankDrive &drive, Odometry &odom, 
+    int leftSpeed, int rightSpeed, int durationMs)
+    : drive(&drive), odom(&odom), 
+    leftSpeed(leftSpeed), rightSpeed(rightSpeed), durationMs(durationMs) {}
 
-void DriveDistance::initialize() {
-    drive->driveDistance(distanceInches);
+void DriveDeadReckon::initialize() {
+    drive->driveMotors(leftSpeed, rightSpeed);
+    startTime = pros::millis();
 }
 
-void DriveDistance::execute() {
-    // TODO: We may want to implement the follower logic inside the commands 
-    // instead of the TankDrive class in order to ensure the method ends 
-    // properly. For now, this will be blank.
+bool DriveDeadReckon::isFinished() {
+    return pros::millis() - startTime >= durationMs;
 }
 
-bool DriveDistance::isFinished() {
-    // The real logic here would be checking the odom to see if we are close enough 
-    // to the target position. 
-    return true;
-}
-
-void DriveDistance::end() {
-    Pose currentPose;
-    odom->getPose(&currentPose);
-    drive->driveToPose(&currentPose); // Stop the drive
+void DriveDeadReckon::end() {
+    drive->driveMotors(0, 0);
 }
