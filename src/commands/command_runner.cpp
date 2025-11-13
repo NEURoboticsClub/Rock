@@ -18,6 +18,7 @@ void CommandRunner::run() {
 
         currentTask->remove();
         delete currentTask;
+
         currentCommand->end();
         commands.pop();
     }
@@ -30,7 +31,10 @@ CommandRunner::~CommandRunner() {
         delete currentCommand;
     }
     if (currentTask != nullptr) {
-        currentTask->remove();
+        // Checks if task is running
+        if (currentTask->get_state() == 0) {
+            currentTask->remove();
+        }
         delete currentTask;
     }
 }

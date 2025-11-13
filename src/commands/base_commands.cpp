@@ -2,7 +2,11 @@
 
 // Base Command class implementations
 void Command::initialize() {}
-void Command::execute() {}
+void Command::execute() {
+    while (true) {
+        pros::delay(10);
+    }
+}
 bool Command::isFinished() { return true; }
 void Command::end() {}
 
@@ -30,25 +34,26 @@ void SequentialCommandGroup::initialize() {
 }
 
 void SequentialCommandGroup::execute() {
-    while (!commands.empty()) {
-        currentTask = new pros::Task([this]() {
-            currentCommand->execute();
-        });
+    while (true) {
+        if (!commands.empty()) {
+            currentTask = new pros::Task([this]() {
+                currentCommand->execute();
+            });
 
-        while (!currentCommand->isFinished()) {
-            pros::delay(10);
+            while (!currentCommand->isFinished()) {
+                pros::delay(10);
+            }
+
+            currentTask->remove();
+            delete currentTask;
+            currentCommand->end();
+            commands.pop();
+
+            if (!commands.empty()) {
+                currentCommand = commands.front();
+                currentCommand->initialize();
+            }
         }
-
-        currentTask->remove();
-        delete currentTask;
-        currentCommand->end();
-        commands.pop();
-
-        if (commands.empty()) {
-            break;
-        }
-        currentCommand = commands.front();
-        currentCommand->initialize();
     }
 }
 
@@ -58,11 +63,11 @@ bool SequentialCommandGroup::isFinished() {
 
 void SequentialCommandGroup::end() {
     if (currentTask != nullptr) {
-        currentTask->remove();
+        // Checks if task is running
+        if (currentTask->get_state() == 0) {
+            currentTask->remove();
+        }
         delete currentTask;
-    }
-    if (currentCommand != nullptr) {
-        currentCommand->end();
     }
 }
 
@@ -91,6 +96,10 @@ void ParallelCommandGroup::execute() {
         });
         currentTasks.push_back(task);
     }
+
+    while (true) {
+        pros::delay(10);
+    }
 }
 
 bool ParallelCommandGroup::isFinished() {
@@ -103,12 +112,15 @@ bool ParallelCommandGroup::isFinished() {
 }
 
 void ParallelCommandGroup::end() {
-    for (pros::Task* task : currentTasks) {
-        task->remove();
-        delete task;
-    }
     for (Command* command : commands) {
         command->end();
+    }
+    for (pros::Task* task : currentTasks) {
+        // Checks if task is running
+        if (task->get_state() == 0) {
+            task->remove();
+        }
+        delete task;
     }
 
     currentTasks.clear();
