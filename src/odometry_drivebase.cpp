@@ -42,17 +42,17 @@ void DrivebaseOdometry::updatePose() {
 	double d = (dL + dR) / 2.0;
 	double deltaThetaRad = (dR - dL) / (2.0 * dW);
 
-	printf("Calculating...");
+	// printf("Calculating...");
 
-	double x = currentPose->x +
-			   (d * static_cast<double>(cos(currentPose->theta + (deltaThetaRad / 2.0))));
-	double y = currentPose->y +
-			   (d * static_cast<double>(sin(currentPose->theta + (deltaThetaRad / 2.0))));
-	double theta = currentPose->theta + deltaThetaRad;
+	double x = currentPose_.x +
+			   (d * static_cast<double>(cos(currentPose_.theta + (deltaThetaRad / 2.0))));
+	double y = currentPose_.y +
+			   (d * static_cast<double>(sin(currentPose_.theta + (deltaThetaRad / 2.0))));
+	double theta = currentPose_.theta + deltaThetaRad;
 
-	currentPose->x = x;
-	currentPose->y = y;
-	currentPose->theta = theta;
+	currentPose_.x = x;
+	currentPose_.y = y;
+	currentPose_.theta = theta;
 
 	leftMotorGroupLastPos = leftMotorGroupNewPos;
 	rightMotorGroupLastPos = rightMotorGroupNewPos;

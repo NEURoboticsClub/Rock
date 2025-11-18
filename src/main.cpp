@@ -55,6 +55,8 @@ void autonomous() {}
 void opcontrol() {
 	printf("starting opcontrol");
 
+	robotInit();
+
 	tankdrive.initialize(config.drivebase.driveStyle);
 
 	intake.initialize();

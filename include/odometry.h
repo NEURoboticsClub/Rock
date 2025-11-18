@@ -23,13 +23,13 @@ class Odometry	// TODO: add mutex for pose (and encoders, because reset?)
 
   protected:
 	// The robot's current position
-	Pose *currentPose;
+	Pose currentPose_ = Pose(0.0,0.0,0.0);
 	// Update the robot's current position based on the latest odometry data
 	virtual void updatePose();
 	// Odometry main function
 	void runOdometry();
 
-	pros::Mutex poseMutex;
+	pros::Mutex poseMutex_;
 };
 
 #endif

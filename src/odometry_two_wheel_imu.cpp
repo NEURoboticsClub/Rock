@@ -47,9 +47,9 @@ void TwoWheelImuOdometry::updatePose() {
     double dx_field = dx_robot * cos(thetaRad) - dy_robot * sin(thetaRad);
     double dy_field = dx_robot * sin(thetaRad) + dy_robot * cos(thetaRad);
 
-	currentPose->x += dx_field;
-	currentPose->y += dy_field;
-	currentPose->theta = thetaRad;
+	currentPose_.x += dx_field;
+	currentPose_.y += dy_field;
+	currentPose_.theta = thetaRad;
 
 	leftEncoderLastPos = leftEncoderNewPos;
 	rightEncoderLastPos = rightEncoderNewPos;

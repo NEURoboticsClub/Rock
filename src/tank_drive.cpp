@@ -1,8 +1,13 @@
 #include "tank_drive.h"
 
+#include <cmath>
+#include "odometry.h"
+#include "odometry_perpendicular_imu.h"
+
 // constructor
-TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
+TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl, Odometry *odom)
 	: controller(ctrl),
+	  odom_(odom),
 	  speedMultiplier(config.speedMultiplier),
 	  leftMotorGroup(config.brainside),
 	  rightMotorGroup(config.batteryside),
@@ -19,14 +24,6 @@ TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
 	pidCtrlTurn = new PIDController<double>(config.autonConstants.kPTurn,
 											config.autonConstants.kITurn,
 											config.autonConstants.kDTurn);
-
-	// odom = new DrivebaseOdometry(config.brainside, config.batteryside,
-	// 							 config.gearset,
-	// 							 config.autonConstants.trackWidthIn);
-	odom = new OdometryPerpendicularIMU(5, 10, 3, 4);
-	std::cout << "Initialized OdometryPerpendicularIMU" << std::endl;
-	odom->reset();
-	odom->init();
 }
 
 TankDrive::~TankDrive() {
@@ -34,7 +31,6 @@ TankDrive::~TankDrive() {
 	delete pidCtrlTurn;
 	delete setPoint;
 	delete currentTask;
-	delete odom;
 }
 
 void TankDrive::runAuton() {
@@ -44,7 +40,7 @@ void TankDrive::runAuton() {
 		int16_t pidValTurn = 0;
 		int16_t maxMotorMag = getInputExtremeForGearset(
 			(pros::motor_gearset_e)leftMotorGroup.get_gearing());
-		odom->getPose(&currentPose);
+		odom_->getPose(&currentPose);
 		// printf("setpoint x: %f, y: %f, theta: %f\n", setPoint->x,
 		// setPoint->y, setPoint->theta); printf("current x: %f, y: %f, theta:
 		// %f\n", currentPose.x, currentPose.y, currentPose.theta);
@@ -108,7 +104,7 @@ void TankDrive::driveToPoint(double targetX, double targetY) {
 void TankDrive::driveDistance(double distIn) {
 	pidMode = DRIVING;
 	Pose currentPose;
-	odom->getPose(&currentPose);
+	odom_->getPose(&currentPose);
 	setPoint->x = distIn * (cos(currentPose.theta));
 	setPoint->y = distIn * (sin(currentPose.theta));
 }
@@ -162,9 +158,9 @@ void TankDrive::arcadeDrive() {
 		rightMotorGroup.move((int)rightSpeed);
 		leftMotorGroup.move((int)leftSpeed);
 		Pose currentPose;
-		odom->getPose(&currentPose);
-		// printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
-		// 	   currentPose.theta);
+		odom_->getPose(&currentPose);
+		printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
+			   currentPose.theta);
 
 		pros::delay(20);
 	}
