@@ -1,7 +1,5 @@
 #include "tank_drive.h"
 
-#include <cmath>
-
 // constructor
 TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
 	: controller(ctrl),
@@ -22,9 +20,12 @@ TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
 											config.autonConstants.kITurn,
 											config.autonConstants.kDTurn);
 
-	odom = new DrivebaseOdometry(config.brainside, config.batteryside,
-								 config.gearset,
-								 config.autonConstants.trackWidthIn);
+	// odom = new DrivebaseOdometry(config.brainside, config.batteryside,
+	// 							 config.gearset,
+	// 							 config.autonConstants.trackWidthIn);
+	odom = new OdometryPerpendicularIMU(5, 10, 3, 4);
+	std::cout << "Initialized OdometryPerpendicularIMU" << std::endl;
+	odom->reset();
 	odom->init();
 }
 
@@ -33,6 +34,7 @@ TankDrive::~TankDrive() {
 	delete pidCtrlTurn;
 	delete setPoint;
 	delete currentTask;
+	delete odom;
 }
 
 void TankDrive::runAuton() {
@@ -161,8 +163,8 @@ void TankDrive::arcadeDrive() {
 		leftMotorGroup.move((int)leftSpeed);
 		Pose currentPose;
 		odom->getPose(&currentPose);
-		printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
-			   currentPose.theta);
+		// printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
+		// 	   currentPose.theta);
 
 		pros::delay(20);
 	}

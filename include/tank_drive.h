@@ -9,6 +9,7 @@
 #include "pose.h"
 #include "robot_config.h"
 #include "utils.h"
+#include "odometry_perpendicular_imu.h"
 
 /**
  * A tank drive drivebase. Contains functions for both manual and

@@ -80,7 +80,7 @@ static AutonConstants hsky1AutonConstants = {
 };
 
 static DrivebaseConfig hsky1Drivebase = {
-	{-12, -11, 13},			{2, 1, -3}, pros::E_MOTOR_BRAKE_COAST,
+	{-12, -11, 13},			{2, 1, -6}, pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
 	hsky1AutonConstants};
 

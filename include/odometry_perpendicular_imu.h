@@ -3,7 +3,7 @@
 
 class OdometryPerpendicularIMU : public Odometry {
   public:
-    OdometryPerpendicularIMU(int8_t leftEncoderPort, int8_t rightEncoderPort,
+    OdometryPerpendicularIMU(int8_t horizontalEncoderPort, int8_t verticalEncoderPort,
                              int8_t imu1Port, int8_t imu2Port);
     void reset() override;
 
@@ -12,13 +12,13 @@ class OdometryPerpendicularIMU : public Odometry {
 
   private:
     // Rotation sensors
-    pros::Rotation leftEncoder;
-    pros::Rotation rightEncoder;
+    pros::Rotation horizontalEncoder;
+    pros::Rotation verticalEncoder;
     pros::Imu imu1;
     pros::Imu imu2;
 
     // Internal tracking of past sensor values for delta calculation
-    uint32_t leftEncoderLastPos;
-    uint32_t rightEncoderLastPos;
+    uint32_t horizontalEncoderLastPos;
+    uint32_t verticalEncoderLastPos;
     double imuLastAngle;
 };

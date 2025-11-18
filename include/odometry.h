@@ -28,6 +28,8 @@ class Odometry	// TODO: add mutex for pose (and encoders, because reset?)
 	virtual void updatePose();
 	// Odometry main function
 	void runOdometry();
+
+	pros::Mutex poseMutex;
 };
 
 #endif

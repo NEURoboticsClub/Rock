@@ -7,21 +7,27 @@ void Odometry::init() {
 }
 
 void Odometry::reset() {
+	poseMutex.take();
 	currentPose->x = 0.0;
 	currentPose->y = 0.0;
 	currentPose->theta = 0.0;
+	poseMutex.give();
 }
 
 void Odometry::getPose(Pose *pose) {
+	poseMutex.take();
 	pose->x = currentPose->x;
 	pose->y = currentPose->y;
 	pose->theta = currentPose->theta;
+	poseMutex.give();
 }
 
 void Odometry::setPose(Pose *newPose) {
+	poseMutex.take();
 	currentPose->x = newPose->x;
 	currentPose->y = newPose->y;
 	currentPose->theta = newPose->theta;
+	poseMutex.give();
 }
 
 void Odometry::updatePose() {}
