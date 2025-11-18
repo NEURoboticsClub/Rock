@@ -7,31 +7,31 @@ OdometryPerpendicularIMU::OdometryPerpendicularIMU(
       imu2_(imu2),
       xEncoder_(xEncoder),
       yEncoder_(yEncoder),
-      horizontalEncoderLastPos_(0),
-      verticalEncoderLastPos_(0),
+      xEncoderLastPos_(0),
+      yEncoderLastPos_(0),
       imuLastAngle_(0.0) {}
     
 void OdometryPerpendicularIMU::reset() {
     std::cout << "Resetting OdometryPerpendicularIMU..." << std::endl;
     Odometry::reset();
-    horizontalEncoderLastPos_ = 0;
-    verticalEncoderLastPos_ = 0;
+    xEncoderLastPos_ = 0;
+    yEncoderLastPos_ = 0;
     imuLastAngle_ = 0.0;
 }
 
 void OdometryPerpendicularIMU::updatePose() {
-    int32_t horizontalEncoderNewPos = xEncoder_->get_position();
-    int32_t verticalEncoderNewPos = yEncoder_->get_position();
+    int32_t xEncoderNewPos = xEncoder_->get_position();
+    int32_t yEncoderNewPos = yEncoder_->get_position();
 
-    std::cout << "Horizontal Encoder Pos: " << horizontalEncoderNewPos
-              << " Vertical Encoder Pos: " << verticalEncoderNewPos << std::endl;
+    std::cout << "Horizontal Encoder Pos: " << xEncoderNewPos
+              << " Vertical Encoder Pos: " << yEncoderNewPos << std::endl;
 
     // 36000 = ticks per rev; 6.28318 = 2 * pi
     double dH =
-        ((static_cast<double>(horizontalEncoderNewPos) - static_cast<double>(horizontalEncoderLastPos_)) / 36000.0) *
+        ((static_cast<double>(xEncoderNewPos) - static_cast<double>(xEncoderLastPos_)) / 36000.0) *
         6.28318;
     double dV =
-        ((static_cast<double>(verticalEncoderNewPos) - static_cast<double>(verticalEncoderLastPos_)) / 36000.0) *
+        ((static_cast<double>(yEncoderNewPos) - static_cast<double>(yEncoderLastPos_)) / 36000.0) *
         6.28318;
 
     double imu1Angle = imu1_->get_rotation();
@@ -52,7 +52,7 @@ void OdometryPerpendicularIMU::updatePose() {
     currentPose_.y += dy_field;
     currentPose_.theta += dThetaRad;
 
-    horizontalEncoderLastPos_ = horizontalEncoderNewPos;
-    verticalEncoderLastPos_ = verticalEncoderNewPos;
+    xEncoderLastPos_ = xEncoderNewPos;
+    yEncoderLastPos_ = yEncoderNewPos;
     imuLastAngle_ = imuAvgAngle;
 }
