@@ -33,6 +33,11 @@ TankDrive::~TankDrive() {
 	delete currentTask;
 }
 
+void TankDrive::driveMotors(int leftSpeed, int rightSpeed) {
+	leftMotorGroup.move(leftSpeed);
+	rightMotorGroup.move(rightSpeed);
+}
+
 void TankDrive::runAuton() {
 	while (true) {
 		Pose currentPose;

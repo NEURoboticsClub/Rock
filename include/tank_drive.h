@@ -31,6 +31,9 @@ class TankDrive {
 	void driveDistance(double distIn);
 	void driveToPoint(double targetX, double targetY);
 
+	// Test methods
+	void driveMotors(int leftSpeed, int rightSpeed);
+
   private:
 	pros::MotorGroup leftMotorGroup;
 	pros::MotorGroup rightMotorGroup;
