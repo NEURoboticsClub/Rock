@@ -159,8 +159,6 @@ void TankDrive::arcadeDrive() {
 		leftMotorGroup.move((int)leftSpeed);
 		Pose currentPose;
 		odom_->getPose(&currentPose);
-		printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
-			   currentPose.theta);
 
 		pros::delay(20);
 	}

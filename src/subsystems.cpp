@@ -4,7 +4,7 @@ RobotConfig config = hsky1Config;
 
 //===================== DEVICES =====================
 pros::Rotation xEncoder(5);
-pros::Rotation yEncoder(10);
+pros::Rotation yEncoder(-10);
 
 pros::IMU imu1(3);
 pros::IMU imu2(7);

@@ -18,7 +18,7 @@ class OdometryPerpendicularIMU : public Odometry {
     pros::Imu *imu2_;
 
     // Internal tracking of past sensor values for delta calculation
-    uint32_t xEncoderLastPos_;
-    uint32_t yEncoderLastPos_;
+    int32_t xEncoderLastPos_;
+    int32_t yEncoderLastPos_;
     double imuLastAngle_;
 };
