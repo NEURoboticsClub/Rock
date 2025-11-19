@@ -9,6 +9,7 @@
 #include "pose.h"
 #include "robot_config.h"
 #include "utils.h"
+#include "odometry_perpendicular_imu.h"
 
 /**
  * A tank drive drivebase. Contains functions for both manual and
@@ -16,7 +17,7 @@
  */
 class TankDrive {
   public:
-	TankDrive(DrivebaseConfig config, pros::Controller &ctrl);
+	TankDrive(DrivebaseConfig config, pros::Controller &ctrl, Odometry *odom = NULL);
 
 	~TankDrive();
 
@@ -35,7 +36,7 @@ class TankDrive {
 	pros::MotorGroup rightMotorGroup;
 	pros::Controller controller;
 	double speedMultiplier;
-	Odometry *odom;
+	Odometry *odom_;
 	Pose *setPoint = new Pose(0.0, 0.0, 0.0);
 	pros::Task *currentTask;
 	PIDMode pidMode;

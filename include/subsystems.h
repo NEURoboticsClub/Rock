@@ -18,11 +18,13 @@
  * the controller, both defined here, in their constructor.
  */
 
-pros::Controller ctrl(pros::E_CONTROLLER_MASTER);
-RobotConfig config = hsky1Config;
-TankDrive tankdrive(config.drivebase, ctrl);
-Transport intake(config.intake, ctrl);
-Transport scoring(config.scoring, ctrl);
-Pneumatics mogoClamp(config.mogoClamp, ctrl);
+extern pros::Controller ctrl;
+extern RobotConfig config;
+extern TankDrive tankdrive;
+extern Transport intake;
+extern Transport scoring;
+extern Pneumatics mogoClamp;
+
+void robotInit();
 
 #endif
