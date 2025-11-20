@@ -27,18 +27,18 @@ class DriveDeadReckon : public Command {
     std::uint32_t startTime;
 };
 
-class DriveToPoint : public Command {
+class DriveDistance : public Command {
   public:
     /**
-     * Constructs a DriveToPoint command with specified parameters.
+     * Constructs a DriveDistance command with specified parameters.
      * 
      * @param drive Reference to the TankDrive object to control the robot's movement.
      * @param odom Reference to the Odometry object to track the robot's position.
-     * @param targetX The target X coordinate to drive to.
-     * @param targetY The target Y coordinate to drive to.
+     * @param targetDistance The distance to drive in inches.
      */
-    DriveToPoint(TankDrive &drive, Odometry &odom, double targetX, double targetY);
+    DriveDistance(TankDrive &drive, Odometry &odom, double targetDistance);
 
+    void initialize() override;
     void execute() override;
     bool isFinished() override;
     void end() override;
@@ -46,7 +46,7 @@ class DriveToPoint : public Command {
   private:
     TankDrive *drive_;
     Odometry *odom_;
+    double targetDistance_;
     double targetX_;
     double targetY_;
-    bool reached_;
 };

@@ -11,7 +11,7 @@ AutonConstants hsky1AutonConstants = {
 	0.01,
 	0.1,
 
-	0,
+	1,
 	0,
 	0,
 

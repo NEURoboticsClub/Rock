@@ -114,6 +114,8 @@ void TankDrive::driveDistance(double distIn) {
 	odom_->getPose(&currentPose);
 	setPoint->x = distIn * (cos(currentPose.theta));
 	setPoint->y = distIn * (sin(currentPose.theta));
+
+	runAuton();
 }
 
 void TankDrive::tankDrive() {
