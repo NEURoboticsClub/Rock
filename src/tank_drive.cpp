@@ -1,10 +1,13 @@
 #include "tank_drive.h"
 
 #include <cmath>
+#include "odometry.h"
+#include "odometry_perpendicular_imu.h"
 
 // constructor
-TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
+TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl, Odometry *odom)
 	: controller(ctrl),
+	  odom_(odom),
 	  speedMultiplier(config.speedMultiplier),
 	  leftMotorGroup(config.brainside),
 	  rightMotorGroup(config.batteryside),
@@ -21,11 +24,6 @@ TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl)
 	pidCtrlTurn = new PIDController<double>(config.autonConstants.kPTurn,
 											config.autonConstants.kITurn,
 											config.autonConstants.kDTurn);
-
-	odom = new DrivebaseOdometry(config.brainside, config.batteryside,
-								 config.gearset,
-								 config.autonConstants.trackWidthIn);
-	odom->init();
 }
 
 TankDrive::~TankDrive() {
@@ -35,6 +33,11 @@ TankDrive::~TankDrive() {
 	delete currentTask;
 }
 
+void TankDrive::driveMotors(int leftSpeed, int rightSpeed) {
+	leftMotorGroup.move(leftSpeed);
+	rightMotorGroup.move(rightSpeed);
+}
+
 void TankDrive::runAuton() {
 	while (true) {
 		Pose currentPose;
@@ -42,7 +45,7 @@ void TankDrive::runAuton() {
 		int16_t pidValTurn = 0;
 		int16_t maxMotorMag = getInputExtremeForGearset(
 			(pros::motor_gearset_e)leftMotorGroup.get_gearing());
-		odom->getPose(&currentPose);
+		odom_->getPose(&currentPose);
 		// printf("setpoint x: %f, y: %f, theta: %f\n", setPoint->x,
 		// setPoint->y, setPoint->theta); printf("current x: %f, y: %f, theta:
 		// %f\n", currentPose.x, currentPose.y, currentPose.theta);
@@ -55,16 +58,16 @@ void TankDrive::runAuton() {
 				pidCtrlMove->compute(*setPoint, currentPose);
 			printf("move: %f\n", moveComputation);
 			pidValMove =
-				std::clamp(moveComputation, ((double)maxMotorMag * -1.0 * 0.5),
-						   ((double)maxMotorMag * 0.5));
+				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
+						   (static_cast<double>(maxMotorMag) * 0.5));
 		}
 		if (pidMode == TURNING || pidMode == COMBINED) {
 			double turnComputation =
 				pidCtrlTurn->compute(setPoint->theta, currentPose.theta);
 			printf("turn: %f\n", turnComputation);
 			pidValTurn =
-				std::clamp(turnComputation, ((double)maxMotorMag * -1.0 * 0.5),
-						   ((double)maxMotorMag * 0.5));
+				std::clamp(turnComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
+						   (static_cast<double>(maxMotorMag) * 0.5));
 		}
 
 		int16_t motorValLeft = pidValMove - pidValTurn;
@@ -106,7 +109,7 @@ void TankDrive::driveToPoint(double targetX, double targetY) {
 void TankDrive::driveDistance(double distIn) {
 	pidMode = DRIVING;
 	Pose currentPose;
-	odom->getPose(&currentPose);
+	odom_->getPose(&currentPose);
 	setPoint->x = distIn * (cos(currentPose.theta));
 	setPoint->y = distIn * (sin(currentPose.theta));
 }
@@ -118,15 +121,15 @@ void TankDrive::tankDrive() {
 			(scaleControllerInput(
 				 controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)) /
 			 127.0) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)leftMotorGroup.get_gearing()) *
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)leftMotorGroup.get_gearing())) *
 			speedMultiplier;
 		double rightSpeed =
 			(scaleControllerInput(
 				 controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)) /
 			 127.0) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)rightMotorGroup.get_gearing()) *
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)rightMotorGroup.get_gearing())) *
 			speedMultiplier;
 
 		leftMotorGroup.move((int)leftSpeed);
@@ -150,19 +153,17 @@ void TankDrive::arcadeDrive() {
 
 		double leftSpeed =
 			(forwardInput + turnInput) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)leftMotorGroup.get_gearing());
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)leftMotorGroup.get_gearing()));
 		double rightSpeed =
 			(forwardInput - turnInput) *
-			(double)getInputExtremeForGearset(
-				(pros::motor_gearset_e)rightMotorGroup.get_gearing());
+			static_cast<double>(getInputExtremeForGearset(
+				(pros::motor_gearset_e)rightMotorGroup.get_gearing()));
 
 		rightMotorGroup.move((int)rightSpeed);
 		leftMotorGroup.move((int)leftSpeed);
 		Pose currentPose;
-		odom->getPose(&currentPose);
-		printf("x: %f, y: %f, theta: %f\n", currentPose.x, currentPose.y,
-			   currentPose.theta);
+		odom_->getPose(&currentPose);
 
 		pros::delay(20);
 	}

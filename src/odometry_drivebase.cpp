@@ -34,25 +34,25 @@ void DrivebaseOdometry::updatePose() {
 	double leftMotorGroupNewPos = leftMotorGroup.get_position(0);
 	double rightMotorGroupNewPos = rightMotorGroup.get_position(0);
 	double dL =
-		((leftMotorGroupNewPos - (double)leftMotorGroupLastPos) / 360.0) *
+		((leftMotorGroupNewPos - static_cast<double>(leftMotorGroupLastPos)) / 360.0) *
 		(39.0 / 57.0) * 10.205;
 	double dR =
-		((rightMotorGroupNewPos - (double)rightMotorGroupLastPos) / 360.0) *
+		((rightMotorGroupNewPos -static_cast<double>(rightMotorGroupLastPos)) / 360.0) *
 		(39.0 / 57.0) * 10.205;
 	double d = (dL + dR) / 2.0;
 	double deltaThetaRad = (dR - dL) / (2.0 * dW);
 
-	printf("Calculating...");
+	// printf("Calculating...");
 
-	double x = currentPose->x +
-			   (d * (double)cos(currentPose->theta + (deltaThetaRad / 2.0)));
-	double y = currentPose->y +
-			   (d * (double)sin(currentPose->theta + (deltaThetaRad / 2.0)));
-	double theta = currentPose->theta + deltaThetaRad;
+	double x = currentPose_.x +
+			   (d * static_cast<double>(cos(currentPose_.theta + (deltaThetaRad / 2.0))));
+	double y = currentPose_.y +
+			   (d * static_cast<double>(sin(currentPose_.theta + (deltaThetaRad / 2.0))));
+	double theta = currentPose_.theta + deltaThetaRad;
 
-	currentPose->x = x;
-	currentPose->y = y;
-	currentPose->theta = theta;
+	currentPose_.x = x;
+	currentPose_.y = y;
+	currentPose_.theta = theta;
 
 	leftMotorGroupLastPos = leftMotorGroupNewPos;
 	rightMotorGroupLastPos = rightMotorGroupNewPos;

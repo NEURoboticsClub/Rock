@@ -37,12 +37,12 @@ void OdometryThreeWheel::updatePose() {
 	uint32_t rightEncoderNewPos = rightEncoder.get_position();
 	uint32_t centerEncoderNewPos = centerEncoder.get_position();
 	double dL =
-		(((double)leftEncoderNewPos - (double)leftEncoderLastPos) / 36000.0) *
+		((static_cast<double>(leftEncoderNewPos) - static_cast<double>(leftEncoderLastPos)) / 36000.0) *
 		6.28318;
 	double dR =
-		(((double)rightEncoderNewPos - (double)rightEncoderLastPos) / 36000.0) *
+		((static_cast<double>(rightEncoderNewPos) - static_cast<double>(rightEncoderLastPos)) / 36000.0) *
 		6.28318;
-	double dC = (((double)centerEncoderNewPos - (double)centerEncoderLastPos) /
+	double dC = ((static_cast<double>(centerEncoderNewPos) - static_cast<double>(centerEncoderLastPos)) /
 				 36000.0) *
 				6.28318;
 	double deltaThetaRad = (dL - dR) / (sL + sR);
@@ -59,18 +59,18 @@ void OdometryThreeWheel::updatePose() {
 		localOffsetY = (dR / deltaThetaRad) + sR;
 	}
 
-	double thetaM = currentPose->theta + (deltaThetaRad / 2.0);
+	double thetaM = currentPose_.theta + (deltaThetaRad / 2.0);
 
 	double dX = (localOffsetX * cos(thetaM)) - (localOffsetY * sin(thetaM));
 	double dY = (localOffsetX * sin(thetaM)) + (localOffsetY * cos(thetaM));
 
-	double x = currentPose->x + dX;
-	double y = currentPose->y + dY;
-	double theta = currentPose->theta + deltaThetaRad;
+	double x = currentPose_.x + dX;
+	double y = currentPose_.y + dY;
+	double theta = currentPose_.theta + deltaThetaRad;
 
-	currentPose->x = x;
-	currentPose->y = y;
-	currentPose->theta = theta;
+	currentPose_.x = x;
+	currentPose_.y = y;
+	currentPose_.theta = theta;
 
 	leftEncoderLastPos = leftEncoderNewPos;
 	rightEncoderLastPos = rightEncoderNewPos;
