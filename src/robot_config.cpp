@@ -23,32 +23,81 @@ AutonConstants hsky1AutonConstants = {
 };
 
 DrivebaseConfig hsky1Drivebase = {
-	{-12, -11, 13},			{2, 1, -3}, pros::E_MOTOR_BRAKE_COAST,
-	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
-	hsky1AutonConstants};
+	{-6, 9, -8, 11}, // left
+	{-16, 17, -14, 13}, // right
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	ARCADE,
+	0.75,
+	hsky1AutonConstants
+};
 
-TransportConfig hsky1Intake = {{21, -18},
-							   pros::E_MOTOR_BRAKE_COAST,
-							   pros::E_MOTOR_GEAR_600,
-							   pros::E_CONTROLLER_DIGITAL_L1,
-							   pros::E_CONTROLLER_DIGITAL_L2,
-							   1.0};
+TransportConfig hsky1Intake = {
+	{-2, 20, -18}, // left, right, roller
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.75 // duty cycle
+};
 
-TransportConfig hsky1Scoring = {{15, -16},
-								pros::E_MOTOR_BRAKE_COAST,
-								pros::E_MOTOR_GEAR_600,
-								pros::E_CONTROLLER_DIGITAL_R1,
-								pros::E_CONTROLLER_DIGITAL_R2,
-								0.25};
+TransportConfig hsky1CenterStageLower = {
+	{19}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.75 // duty cycle
+};
 
-PneumaticsConfig hsky1MogoClamp = {'a', pros::E_CONTROLLER_DIGITAL_B,
-								   pros::E_CONTROLLER_DIGITAL_X};
+TransportConfig hsky1CenterStageUpper = {
+	{-1}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_L1, // up
+	pros::E_CONTROLLER_DIGITAL_L2, // down
+	0.25 // duty cycle
+};
 
-RobotConfig hsky1Config = {hsky1Drivebase, hsky1Intake, hsky1Scoring,
-						   hsky1MogoClamp};
+TransportConfig hsky1Hood = {
+	{-4}, // motor ports
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	pros::E_CONTROLLER_DIGITAL_R1, // up
+	pros::E_CONTROLLER_DIGITAL_R2, // down
+	0.75 // duty cycle
+};
+
+PneumaticsConfig hsky1IntakeLeft = {
+	'a', // port
+	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
+	pros::E_CONTROLLER_DIGITAL_LEFT // retract
+};
+
+PneumaticsConfig hsky1IntakeRight = {
+	'b', // port
+	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
+	pros::E_CONTROLLER_DIGITAL_LEFT // retract
+};
+
+PneumaticsConfig hsky1Scoring = {
+	'c', // port
+	pros::E_CONTROLLER_DIGITAL_UP, // extend
+	pros::E_CONTROLLER_DIGITAL_DOWN // retract
+};
+
+RobotConfig hsky1Config = {
+	hsky1Drivebase,
+	hsky1Intake,
+	hsky1CenterStageLower,
+	hsky1CenterStageUpper,
+	hsky1Hood,
+	hsky1IntakeLeft,
+	hsky1IntakeRight,
+	hsky1Scoring
+};
 
 //================== HSKY 2 CONFIG ==================
-
 AutonConstants hsky2AutonConstants = {
 	3.25,
 	12.376,
@@ -70,26 +119,15 @@ AutonConstants hsky2AutonConstants = {
 };
 
 DrivebaseConfig hsky2Drivebase = {
-	{-10, -1, 18},			{4, 5, -2}, pros::E_MOTOR_BRAKE_COAST,
-	pros::E_MOTOR_GEAR_600, ARCADE,		0.25,
-	hsky2AutonConstants};
+	{-10, -1, 18},
+	{4, 5, -2},
+	pros::E_MOTOR_BRAKE_COAST,
+	pros::E_MOTOR_GEAR_600,
+	ARCADE,
+	0.25,
+	hsky2AutonConstants
+};
 
-TransportConfig hsky2Intake = {{-16, 6},
-							   pros::E_MOTOR_BRAKE_COAST,
-							   pros::E_MOTOR_GEAR_600,
-							   pros::E_CONTROLLER_DIGITAL_L1,
-							   pros::E_CONTROLLER_DIGITAL_L2,
-							   1.0};
-
-TransportConfig hsky2Scoring = {{9, -14},
-								pros::E_MOTOR_BRAKE_COAST,
-								pros::E_MOTOR_GEAR_600,
-								pros::E_CONTROLLER_DIGITAL_R1,
-								pros::E_CONTROLLER_DIGITAL_R2,
-								0.25};
-
-PneumaticsConfig hsky2MogoClamp = {'a', pros::E_CONTROLLER_DIGITAL_X,
-								   pros::E_CONTROLLER_DIGITAL_B};
-
-RobotConfig hsky2Config = {hsky2Drivebase, hsky2Intake, hsky2Scoring,
-						   hsky2MogoClamp};
+RobotConfig hsky2Config = {
+	
+};
