@@ -22,8 +22,12 @@ extern pros::Controller ctrl;
 extern RobotConfig config;
 extern TankDrive tankdrive;
 extern Transport intake;
-extern Transport scoring;
-extern Pneumatics mogoClamp;
+extern Transport centerStageLower;
+extern Transport centerStageUpper;
+extern Transport hood;
+extern Pneumatics intakeLeft;
+extern Pneumatics intakeRight;
+extern Pneumatics scoring;
 
 void robotInit();
 

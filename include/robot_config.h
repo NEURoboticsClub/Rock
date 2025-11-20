@@ -71,8 +71,12 @@ struct RobotConfig {
 extern AutonConstants hsky1AutonConstants;
 extern DrivebaseConfig hsky1Drivebase;
 extern TransportConfig hsky1Intake;
-extern TransportConfig hsky1Scoring;
-extern PneumaticsConfig hsky1MogoClamp;
+extern TransportConfig hsky1CenterStageLower;
+extern TransportConfig hsky1CenterStageUpper;
+extern TransportConfig hsky1Hood;
+extern PneumaticsConfig hsky1IntakeLeft;
+extern PneumaticsConfig hsky1IntakeRight;
+extern PneumaticsConfig hsky1Scoring;
 extern RobotConfig hsky1Config;
 
 //================== HSKY 2 CONFIG ==================
@@ -80,8 +84,12 @@ extern RobotConfig hsky1Config;
 extern AutonConstants hsky2AutonConstants;
 extern DrivebaseConfig hsky2Drivebase;
 extern TransportConfig hsky2Intake;
-extern TransportConfig hsky2Scoring;
-extern PneumaticsConfig hsky2MogoClamp;
+extern TransportConfig hsky2CenterStageLower;
+extern TransportConfig hsky2CenterStageUpper;
+extern TransportConfig hsky2Hood;
+extern PneumaticsConfig hsky2IntakeLeft;
+extern PneumaticsConfig hsky2IntakeRight;
+extern PneumaticsConfig hsky2Scoring;
 extern RobotConfig hsky2Config;
 
 #endif
