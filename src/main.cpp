@@ -69,7 +69,13 @@ void opcontrol() {
 	std::queue<Command*> commandQueue;
 
 	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
-	// commandQueue.push(new DriveDeadReckon(tankdrive, 25, 25, 1000));
+	commandQueue.push(new TurnToHeading(tankdrive, odom, 90.0));
+	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	commandQueue.push(new TurnToHeading(tankdrive, odom, 180.0));
+	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	commandQueue.push(new TurnToHeading(tankdrive, odom, 270.0));
+	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	commandQueue.push(new TurnToHeading(tankdrive, odom, 0.0));
 
 	CommandRunner commandRunner(commandQueue);
 	commandRunner.run();

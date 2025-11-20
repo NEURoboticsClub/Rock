@@ -20,10 +20,12 @@ void DriveDeadReckon::end() {
 }
 
 // DriveToPoint Command Implementation
-DriveDistance::DriveDistance(TankDrive &drive, Odometry &odom, double targetDistance)
-    : drive_(&drive), odom_(&odom), targetDistance_(targetDistance), targetX_(0), targetY_(0) {}
+DriveDistance::DriveDistance(TankDrive &drive, Odometry &odom, double targetDistance, uint32_t timeoutMs)
+    : drive_(&drive), odom_(&odom), targetDistance_(targetDistance), targetX_(0), 
+    targetY_(0), TimeoutCommand(timeoutMs) {}
 
 void DriveDistance::initialize() {
+    TimeoutCommand::initialize();
     Pose currentPose;
     odom_->getPose(&currentPose);
     targetX_ = currentPose.x + targetDistance_ * cos(currentPose.theta);
@@ -37,10 +39,29 @@ void DriveDistance::execute() {
 bool DriveDistance::isFinished() {
     Pose currentPose;
     odom_->getPose(&currentPose);
-    return std::abs(targetX_ - currentPose.x) < 1.0 &&
-           std::abs(targetY_ - currentPose.y) < 1.0;
+    return TimeoutCommand::isFinished() || 
+        (std::abs(targetX_ - currentPose.x) < 1.0 && std::abs(targetY_ - currentPose.y) < 1.0);
 }
 
 void DriveDistance::end() {
+    drive_->driveMotors(0, 0);
+}
+
+// TurnToHeading Command Implementation
+TurnToHeading::TurnToHeading(TankDrive &drive, Odometry &odom, double targetHeading, uint32_t timeoutMs)
+    : drive_(&drive), odom_(&odom), targetHeading_(targetHeading), TimeoutCommand(timeoutMs) {}
+
+void TurnToHeading::execute() {
+    drive_->turnToHeading(targetHeading_);
+}
+
+bool TurnToHeading::isFinished() {
+    Pose currentPose;
+    odom_->getPose(&currentPose);
+    double currentHeadingDegrees = currentPose.theta * (180.0 / M_PI);
+    return TimeoutCommand::isFinished() || std::abs(targetHeading_ - currentHeadingDegrees) < 2.0;
+}
+
+void TurnToHeading::end() {
     drive_->driveMotors(0, 0);
 }

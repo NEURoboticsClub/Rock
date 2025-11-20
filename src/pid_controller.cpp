@@ -29,7 +29,7 @@ double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 
 	prev_error_ = error;
 
-	printf("PID: P: %f, I: %f, D: %f\n", proportional, integral_, derivative);
+	// printf("PID: P: %f, I: %f, D: %f, Error: %f\n", proportional, integral_, derivative, error);
 
 	return proportional + integral_ + derivative;
 }
@@ -37,6 +37,16 @@ double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 template <>
 double PIDController<double>::compute(double setpoint, double current_value) {
 	double error = setpoint - current_value;
+
+	// For Turning
+	if (error > M_PI) {
+		// printf("+Turn Error before wrap: %f\n", error * (180.0 / M_PI));
+		error = error - 2 * M_PI;
+	} else if (error < -M_PI) {
+		// printf("-Turn Error before wrap: %f\n", error * (180.0 / M_PI));
+		error = error + 2 * M_PI;
+	}
+	// printf("Turn Error: %f\n", error * (180.0 / M_PI));
 
 	double proportional = kp_ * error;
 

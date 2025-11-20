@@ -27,7 +27,7 @@ class DriveDeadReckon : public Command {
     std::uint32_t startTime;
 };
 
-class DriveDistance : public Command {
+class DriveDistance : public TimeoutCommand {
   public:
     /**
      * Constructs a DriveDistance command with specified parameters.
@@ -35,8 +35,9 @@ class DriveDistance : public Command {
      * @param drive Reference to the TankDrive object to control the robot's movement.
      * @param odom Reference to the Odometry object to track the robot's position.
      * @param targetDistance The distance to drive in inches.
+     * @param timeoutMs The duration in milliseconds after which the command should time out.
      */
-    DriveDistance(TankDrive &drive, Odometry &odom, double targetDistance);
+    DriveDistance(TankDrive &drive, Odometry &odom, double targetDistance, uint32_t timeoutMs = 2000);
 
     void initialize() override;
     void execute() override;
@@ -49,4 +50,26 @@ class DriveDistance : public Command {
     double targetDistance_;
     double targetX_;
     double targetY_;
+};
+
+class TurnToHeading : public TimeoutCommand {
+  public:
+    /**
+     * Constructs a TurnToHeading command with specified parameters.
+     * 
+     * @param drive Reference to the TankDrive object to control the robot's movement.
+     * @param odom Reference to the Odometry object to track the robot's position.
+     * @param targetHeading The target heading in degrees.
+     * @param timeoutMs The duration in milliseconds after which the command should time out.
+     */
+    TurnToHeading(TankDrive &drive, Odometry &odom, double targetHeading, uint32_t timeoutMs = 2000);
+
+    void execute() override;
+    bool isFinished() override;
+    void end() override;
+
+  private:
+    TankDrive *drive_;
+    Odometry *odom_;
+    double targetHeading_;
 };
