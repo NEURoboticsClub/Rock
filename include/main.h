@@ -42,6 +42,8 @@
 #include "subsystems.h"
 #include "tank_drive.h"
 #include "transport.h"
+#include "commands/command_runner.h"
+#include "commands/drive_commands.h"
 
 /**
  * You should add more #includes here

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "pose.h"
+#include <stdio.h>
 
 template <typename T>
 PIDController<T>::PIDController(double kp, double ki, double kd)
@@ -12,10 +13,10 @@ template <>
 double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 	double sign = 1.0;
 
-	if (((setpoint.y - current_value.y) / (setpoint.x - current_value.x)) <
-		0.0) {
-		sign = -1.0;
-	}
+	// if (((setpoint.y - current_value.y) / (setpoint.x - current_value.x)) <
+	// 	0.0) {
+	// 	sign = -1.0;
+	// }
 
 	double error = sign * sqrt(pow((setpoint.x - current_value.x), 2.0) +
 							   pow((setpoint.y - current_value.y), 2.0));
@@ -27,6 +28,8 @@ double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 	double derivative = kd_ * (error - prev_error_);
 
 	prev_error_ = error;
+
+	printf("PID: P: %f, I: %f, D: %f\n", proportional, integral_, derivative);
 
 	return proportional + integral_ + derivative;
 }

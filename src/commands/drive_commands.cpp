@@ -18,3 +18,22 @@ bool DriveDeadReckon::isFinished() {
 void DriveDeadReckon::end() {
     drive->driveMotors(0, 0);
 }
+
+// DriveToPoint Command Implementation
+DriveToPoint::DriveToPoint(TankDrive &drive, Odometry &odom, double targetX, double targetY)
+    : drive_(&drive), odom_(&odom), targetX_(targetX), targetY_(targetY), reached_(false) {}
+
+void DriveToPoint::execute() {
+    drive_->driveToPoint(targetX_, targetY_);
+}
+
+bool DriveToPoint::isFinished() {
+    Pose currentPose;
+    odom_->getPose(&currentPose);
+    return std::abs(targetX_ - currentPose.x) < 1.0 &&
+           std::abs(targetY_ - currentPose.y) < 1.0;
+}
+
+void DriveToPoint::end() {
+    drive_->driveMotors(0, 0);
+}

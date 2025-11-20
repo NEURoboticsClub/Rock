@@ -54,8 +54,7 @@ void TankDrive::runAuton() {
 									(setPoint->x - currentPose.x));
 		}
 		if (pidMode == DRIVING || pidMode == COMBINED) {
-			double moveComputation =
-				pidCtrlMove->compute(*setPoint, currentPose);
+			double moveComputation = pidCtrlMove->compute(*setPoint, currentPose);
 			printf("move: %f\n", moveComputation);
 			pidValMove =
 				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
@@ -76,6 +75,7 @@ void TankDrive::runAuton() {
 		printf("right motors: %d\n", motorValRight);
 
 		if (pidMode != OFF) {
+			printf("Driving with PID\n");
 			leftMotorGroup.move(motorValLeft);
 			rightMotorGroup.move(motorValRight);
 		}
@@ -104,6 +104,8 @@ void TankDrive::driveToPoint(double targetX, double targetY) {
 	pidMode = COMBINED;
 	setPoint->x = targetX;
 	setPoint->y = targetY;
+
+	runAuton();
 }
 
 void TankDrive::driveDistance(double distIn) {

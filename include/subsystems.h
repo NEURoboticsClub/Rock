@@ -21,6 +21,7 @@
 extern pros::Controller ctrl;
 extern RobotConfig config;
 extern TankDrive tankdrive;
+extern OdometryPerpendicularIMU odom;
 extern Transport intake;
 extern Transport centerStageLower;
 extern Transport centerStageUpper;
