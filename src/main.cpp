@@ -57,28 +57,28 @@ void opcontrol() {
 
 	robotInit();
 
-	// tankdrive.initialize(config.drivebase.driveStyle);
-	// intake.initialize();
-	// centerStageLower.initialize();
-	// centerStageUpper.initialize();
-	// hood.initialize();
-	// intakeLeft.initialize();
-	// intakeRight.initialize();
-	// scoring.initialize();
+	tankdrive.initialize(config.drivebase.driveStyle);
+	intake.initialize();
+	centerStageLower.initialize();
+	centerStageUpper.initialize();
+	hood.initialize();
+	intakeLeft.initialize();
+	intakeRight.initialize();
+	scoring.initialize();
 
-	std::queue<Command*> commandQueue;
+	// std::queue<Command*> commandQueue;
 
-	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
-	commandQueue.push(new TurnToHeading(tankdrive, odom, 90.0));
-	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
-	commandQueue.push(new TurnToHeading(tankdrive, odom, 180.0));
-	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
-	commandQueue.push(new TurnToHeading(tankdrive, odom, 270.0));
-	commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
-	commandQueue.push(new TurnToHeading(tankdrive, odom, 0.0));
+	// commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	// commandQueue.push(new TurnToHeading(tankdrive, odom, 90.0));
+	// commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	// commandQueue.push(new TurnToHeading(tankdrive, odom, 180.0));
+	// commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	// commandQueue.push(new TurnToHeading(tankdrive, odom, 270.0));
+	// commandQueue.push(new DriveDistance(tankdrive, odom, 24.0));
+	// commandQueue.push(new TurnToHeading(tankdrive, odom, 0.0));
 
-	CommandRunner commandRunner(commandQueue);
-	commandRunner.run();
+	// CommandRunner commandRunner(commandQueue);
+	// commandRunner.run();
 
 	while (true) {
 		pros::delay(50);
