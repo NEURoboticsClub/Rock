@@ -62,8 +62,8 @@ void opcontrol() {
 	intakeRight.initialize();
 	scoring.initialize();
 	while (true) {
-	pros::MotorGroup* intake = new pros::MotorGroup({-2, 10, -13, 21, -6});
-	pros::MotorGroup* scoring = new pros::MotorGroup({-1});
+	pros::MotorGroup* intake = new pros::MotorGroup({-2, 16, -7, 6, -5});
+	pros::MotorGroup* scoring = new pros::MotorGroup({-4});
 		if(ctrl.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
 			intake->move(127);
 		} else if (ctrl.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {

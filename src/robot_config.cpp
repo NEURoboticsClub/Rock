@@ -56,7 +56,7 @@ DrivebaseConfig hsky1Drivebase = {
 };
 
 TransportConfig hsky1Intake = {
-	{-2, 10, -13}, // left, right, roller
+	{-2, 17, 7}, // left, right, roller
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -65,7 +65,7 @@ TransportConfig hsky1Intake = {
 };
 
 TransportConfig hsky1CenterStageLower = {
-	{21}, // motor ports
+	{6}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -74,7 +74,7 @@ TransportConfig hsky1CenterStageLower = {
 };
 
 TransportConfig hsky1CenterStageUpper = {
-	{-6}, // motor ports
+	{-5}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -83,7 +83,7 @@ TransportConfig hsky1CenterStageUpper = {
 };
 
 TransportConfig hsky1Hood = {
-	{-1}, // motor ports
+	{-4}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_R1, // up
