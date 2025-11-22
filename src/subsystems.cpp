@@ -3,11 +3,11 @@
 RobotConfig config = hsky1Config;
 
 //===================== DEVICES =====================
-pros::Rotation xEncoder(5);
-pros::Rotation yEncoder(-10);
+pros::Rotation xEncoder(11);
+pros::Rotation yEncoder(-12);
 
-pros::IMU imu1(3);
-pros::IMU imu2(7);
+pros::IMU imu1(0);
+pros::IMU imu2(0);
 
 //==================== SUBSYSTEMS ====================
 

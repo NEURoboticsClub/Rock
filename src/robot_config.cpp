@@ -1,5 +1,28 @@
 #include "robot_config.h"
 
+/*
+
+Odom Front-back 11
+Odom left-right 12
+
+Lower stage 13
+Next Stage 21
+Before hood 6
+Hood 1
+
+Left intake 2
+Right intake 10
+Front Left 4
+Front back top 5
+Left back bottom 16
+
+
+Front right 9
+Right back top 8
+Right back bottom 20
+*/
+
+
 //================== HSKY 1 CONFIG ==================
 
 AutonConstants hsky1AutonConstants = {
@@ -23,8 +46,8 @@ AutonConstants hsky1AutonConstants = {
 };
 
 DrivebaseConfig hsky1Drivebase = {
-	{-6, 9, -8, 11}, // left
-	{-16, 17, -14, 13}, // right
+	{-4, 5, -16, 14}, // left
+	{9, -8, 20, -3}, // right
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	ARCADE,
@@ -33,7 +56,7 @@ DrivebaseConfig hsky1Drivebase = {
 };
 
 TransportConfig hsky1Intake = {
-	{-2, 20, -18}, // left, right, roller
+	{-2, 10, -13}, // left, right, roller
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -42,7 +65,7 @@ TransportConfig hsky1Intake = {
 };
 
 TransportConfig hsky1CenterStageLower = {
-	{19}, // motor ports
+	{21}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -51,7 +74,7 @@ TransportConfig hsky1CenterStageLower = {
 };
 
 TransportConfig hsky1CenterStageUpper = {
-	{-1}, // motor ports
+	{-6}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_L1, // up
@@ -60,7 +83,7 @@ TransportConfig hsky1CenterStageUpper = {
 };
 
 TransportConfig hsky1Hood = {
-	{-4}, // motor ports
+	{-1}, // motor ports
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	pros::E_CONTROLLER_DIGITAL_R1, // up
