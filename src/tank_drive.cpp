@@ -63,7 +63,10 @@ void TankDrive::runAuton() {
 			pidValMove =
 				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
 						   (static_cast<double>(maxMotorMag) * 0.5));
-			if (reversed) {
+			
+			double theta = fmod(currentPose.theta + 2.0 * M_PI, 2.0 * M_PI);
+									
+			if (abs(currentPose.theta - theta) > M_PI / 2) {
 				pidValMove *= -1;
 			}
 		}
