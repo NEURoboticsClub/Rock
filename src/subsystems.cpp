@@ -17,8 +17,12 @@ pros::Controller ctrl(pros::E_CONTROLLER_MASTER);
 
 TankDrive tankdrive(config.drivebase, ctrl, &odom);
 Transport intake(config.intake, ctrl);
-Transport scoring(config.scoring, ctrl);
-Pneumatics mogoClamp(config.mogoClamp, ctrl);
+Transport centerStageLower(config.centerStageLower, ctrl);
+Transport centerStageUpper(config.centerStageUpper, ctrl);
+Transport hood(config.hood, ctrl);
+Pneumatics intakeLeft(config.intakeLeft, ctrl);
+Pneumatics intakeRight(config.intakeRight, ctrl);
+Pneumatics scoring(config.scoring, ctrl);
 
 //====================== UTILS ======================
 

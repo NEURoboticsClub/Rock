@@ -39,6 +39,8 @@ void TankDrive::driveMotors(int leftSpeed, int rightSpeed) {
 }
 
 void TankDrive::runAuton() {
+	pidCtrlMove->reset();
+	pidCtrlTurn->reset();
 	while (true) {
 		Pose currentPose;
 		int16_t pidValMove = 0;
@@ -54,9 +56,9 @@ void TankDrive::runAuton() {
 									(setPoint->x - currentPose.x));
 		}
 		if (pidMode == DRIVING || pidMode == COMBINED) {
-			double moveComputation =
-				pidCtrlMove->compute(*setPoint, currentPose);
-			printf("move: %f\n", moveComputation);
+			double moveComputation = pidCtrlMove->compute(*setPoint, currentPose);
+			// printf("Setpoiint: x: %f, y: %f\n", setPoint->x, setPoint->y);
+			// printf("move: %f\n", moveComputation);
 			pidValMove =
 				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
 						   (static_cast<double>(maxMotorMag) * 0.5));
@@ -64,7 +66,7 @@ void TankDrive::runAuton() {
 		if (pidMode == TURNING || pidMode == COMBINED) {
 			double turnComputation =
 				pidCtrlTurn->compute(setPoint->theta, currentPose.theta);
-			printf("turn: %f\n", turnComputation);
+			// printf("turn: %f\n", turnComputation);
 			pidValTurn =
 				std::clamp(turnComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
 						   (static_cast<double>(maxMotorMag) * 0.5));
@@ -72,10 +74,11 @@ void TankDrive::runAuton() {
 
 		int16_t motorValLeft = pidValMove - pidValTurn;
 		int16_t motorValRight = pidValMove + pidValTurn;
-		printf("left motors: %d\n", motorValLeft);
-		printf("right motors: %d\n", motorValRight);
+		// printf("left motors: %d\n", motorValLeft);
+		// printf("right motors: %d\n", motorValRight);
 
 		if (pidMode != OFF) {
+			// printf("Driving with PID\n");
 			leftMotorGroup.move(motorValLeft);
 			rightMotorGroup.move(motorValRight);
 		}
@@ -98,20 +101,26 @@ void TankDrive::driveToPose(Pose *targetPose) {
 void TankDrive::turnToHeading(double targetHeadingDegrees) {
 	pidMode = TURNING;
 	setPoint->theta = (targetHeadingDegrees * M_PI) / 180.0;
+
+	runAuton();
 }
 
 void TankDrive::driveToPoint(double targetX, double targetY) {
 	pidMode = COMBINED;
 	setPoint->x = targetX;
 	setPoint->y = targetY;
+
+	runAuton();
 }
 
 void TankDrive::driveDistance(double distIn) {
 	pidMode = DRIVING;
 	Pose currentPose;
 	odom_->getPose(&currentPose);
-	setPoint->x = distIn * (cos(currentPose.theta));
-	setPoint->y = distIn * (sin(currentPose.theta));
+	setPoint->x += distIn * (cos(currentPose.theta));
+	setPoint->y += distIn * (sin(currentPose.theta));
+
+	runAuton();
 }
 
 void TankDrive::tankDrive() {

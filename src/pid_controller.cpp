@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "pose.h"
+#include <stdio.h>
 
 template <typename T>
 PIDController<T>::PIDController(double kp, double ki, double kd)
@@ -12,10 +13,10 @@ template <>
 double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 	double sign = 1.0;
 
-	if (((setpoint.y - current_value.y) / (setpoint.x - current_value.x)) <
-		0.0) {
-		sign = -1.0;
-	}
+	// if (((setpoint.y - current_value.y) / (setpoint.x - current_value.x)) <
+	// 	0.0) {
+	// 	sign = -1.0;
+	// }
 
 	double error = sign * sqrt(pow((setpoint.x - current_value.x), 2.0) +
 							   pow((setpoint.y - current_value.y), 2.0));
@@ -28,12 +29,24 @@ double PIDController<Pose>::compute(Pose setpoint, Pose current_value) {
 
 	prev_error_ = error;
 
+	// printf("PID: P: %f, I: %f, D: %f, Error: %f\n", proportional, integral_, derivative, error);
+
 	return proportional + integral_ + derivative;
 }
 
 template <>
 double PIDController<double>::compute(double setpoint, double current_value) {
 	double error = setpoint - current_value;
+
+	// For Turning
+	if (error > M_PI) {
+		// printf("+Turn Error before wrap: %f\n", error * (180.0 / M_PI));
+		error = error - 2 * M_PI;
+	} else if (error < -M_PI) {
+		// printf("-Turn Error before wrap: %f\n", error * (180.0 / M_PI));
+		error = error + 2 * M_PI;
+	}
+	// printf("Turn Error: %f\n", error * (180.0 / M_PI));
 
 	double proportional = kp_ * error;
 
