@@ -57,71 +57,74 @@ void opcontrol() {
 
 	robotInit();
 
-	tankdrive.initialize(config.drivebase.driveStyle);
-	intake.initialize();
-	centerStageLower.initialize();
-	centerStageUpper.initialize();
-	hood.initialize();
-	intakeLeft.initialize();
-	intakeRight.initialize();
-	scoring.initialize();
+	// tankdrive.initialize(config.drivebase.driveStyle);
+	// intake.initialize();
+	// centerStageLower.initialize();
+	// centerStageUpper.initialize();
+	// hood.initialize();
+	// intakeLeft.initialize();
+	// intakeRight.initialize();
+	// scoring.initialize();
 
 
-	// // right auto
-	// Pose* startPose = new Pose(0.0, 0.0, 0.0);
-	// odom.setPose(startPose);
-	// delete startPose;
+	// // left auto
+	Pose* startPose = new Pose(0.0, 0.0, 0.0);
+	odom.setPose(startPose);
+	delete startPose;
 
-	// std::queue<Command*> commandQueue;
+	std::queue<Command*> commandQueue;
 
-	// commandQueue.push(new SequentialCommandGroup(std::queue<Command*>({
-	// 	// Drive to the loader
-	// 	new DriveDistance(tankdrive, odom, 20.0, 2000),
-	// 	new TurnToHeading(tankdrive, odom, 270.0, 1000),
+	commandQueue.push(new SequentialCommandGroup(std::queue<Command*>({
+		// // Drive to the loader
+		// new TimeoutCommand(500),
+		// new DriveDistance(tankdrive, odom, 26.0, 2000),
+		// new TurnToHeading(tankdrive, odom, 90.0, 2000),
 
-	// 	// Intake from the loader
-	// 	new EngageIntake(intakeLeft, intakeRight), 
-	// 	new DriveDistance(tankdrive, odom, 5.0, 500),
-	// 	new RunIntake(intake, centerStageLower, centerStageUpper,2000),
+		// // Intake from the loader
+		// new DriveDistance(tankdrive, odom, 12.0, 2000),
+		// new EngageIntake(intakeLeft, intakeRight), 
+		// new RunIntake(intake, centerStageLower, centerStageUpper,2000),
 
-	// 	// Drive to scoring zone
-	// 	new DisengageIntake(intakeLeft, intakeRight),
-	// 	new DriveDistance(tankdrive, odom, -26.0, 1000),
+		// // Drive to scoring zone
+		// new DisengageIntake(intakeLeft, intakeRight),
+		new DriveDistance(tankdrive, odom, -26.0, 1000),
 
-	// 	// Score
-	// 	new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000),
+		// new TimeoutCommand(2000),
 
-	// 	// Intake more, discard opposite color 
-	// 	new EngageIntake(intakeLeft, intakeRight), 
-	// 	new DriveDistance(tankdrive, odom, 5.0, 500),
-	// 	new SortOutIntake(intake, centerStageLower, 2000),
+		// // Score
+		// new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000),
 
-	// 	// Wait and intake again
-	// 	new TimeoutCommand(1000),
-	// 	new RunIntake(intake, centerStageLower, centerStageUpper, 2000),
+		// // Intake more, discard opposite color 
+		// new EngageIntake(intakeLeft, intakeRight), 
+		new DriveDistance(tankdrive, odom, 5.0, 500),
+		// new SortOutIntake(intake, centerStageLower, 2000),
 
-	// 	// Drive to scoring zone
-	// 	new DisengageIntake(intakeLeft, intakeRight),
-	// 	new DriveDistance(tankdrive, odom, -26.0, 1000),
+		// // Wait and intake again
+		// new TimeoutCommand(1000),
+		// new RunIntake(intake, centerStageLower, centerStageUpper, 2000),
 
-	// 	// Score
-	// 	new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000),
+		// // Drive to scoring zone
+		// new DisengageIntake(intakeLeft, intakeRight),
+		new DriveDistance(tankdrive, odom, -26.0, 1000),
 
-	// 	// Intake again
-	// 	new EngageIntake(intakeLeft, intakeRight),
-	// 	new DriveDistance(tankdrive, odom, 5.0, 500),
-	// 	new RunIntake(intake, centerStageLower, centerStageUpper, 2000),
+		// // Score
+		// new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000),
 
-	// 	// Drive to scoring zone
-	// 	new DisengageIntake(intakeLeft, intakeRight),
-	// 	new DriveDistance(tankdrive, odom, -26.0, 1000),
+		// // Intake again
+		// new EngageIntake(intakeLeft, intakeRight),
+		new DriveDistance(tankdrive, odom, 5.0, 500),
+		// new RunIntake(intake, centerStageLower, centerStageUpper, 2000),
 
-	// 	// Score
-	// 	new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000)
-	// })));
+		// // Drive to scoring zone
+		// new DisengageIntake(intakeLeft, intakeRight),
+		new DriveDistance(tankdrive, odom, -26.0, 1000),
 
-	// CommandRunner commandRunner(commandQueue);
-	// commandRunner.run();
+		// // Score
+		// new RunScoring(intake, centerStageLower, centerStageUpper, hood, 2000)
+	})));
+
+	CommandRunner commandRunner(commandQueue);
+	commandRunner.run();
 
 	while (true) {
 		pros::delay(50);

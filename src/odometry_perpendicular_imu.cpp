@@ -30,11 +30,12 @@ void OdometryPerpendicularIMU::updatePose() {
         ((static_cast<double>(yEncoderNewPos) - static_cast<double>(yEncoderLastPos_)) / 36000.0) * circumference;
 
     double imu1Angle = 360 - imu1_->get_rotation();
-    double imu2Angle = 360 - imu2_->get_rotation();
+    double imu2Angle = imu1Angle; //360 - imu2_->get_rotation();
     double imuAvgAngle = std::fmod((imu1Angle + imu2Angle) / 2.0, 360.0);
 
     if (std::isfinite(imuAvgAngle) == false) {
         printf("IMU reading invalid, skipping pose update\n");
+        // imuAvgAngle = 0;
         return;
     }
 

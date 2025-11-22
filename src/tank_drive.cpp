@@ -11,7 +11,8 @@ TankDrive::TankDrive(DrivebaseConfig config, pros::Controller &ctrl, Odometry *o
 	  speedMultiplier(config.speedMultiplier),
 	  leftMotorGroup(config.brainside),
 	  rightMotorGroup(config.batteryside),
-	  pidMode(OFF) {
+	  pidMode(OFF),
+	  reversed(false) {
 	leftMotorGroup.set_brake_mode_all(config.brakeMode);
 	rightMotorGroup.set_brake_mode_all(config.brakeMode);
 	leftMotorGroup.set_gearing_all(config.gearset);
@@ -62,6 +63,9 @@ void TankDrive::runAuton() {
 			pidValMove =
 				std::clamp(moveComputation, (static_cast<double>(maxMotorMag) * -1.0 * 0.5),
 						   (static_cast<double>(maxMotorMag) * 0.5));
+			if (reversed) {
+				pidValMove *= -1;
+			}
 		}
 		if (pidMode == TURNING || pidMode == COMBINED) {
 			double turnComputation =
@@ -119,6 +123,12 @@ void TankDrive::driveDistance(double distIn) {
 	odom_->getPose(&currentPose);
 	setPoint->x += distIn * (cos(currentPose.theta));
 	setPoint->y += distIn * (sin(currentPose.theta));
+
+	if (distIn < 0) {
+		reversed = true;
+	} else {
+		reversed = false;
+	}
 
 	runAuton();
 }

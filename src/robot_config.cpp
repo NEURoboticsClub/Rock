@@ -30,13 +30,13 @@ AutonConstants hsky1AutonConstants = {
 	12.376,
 	300.0 * 57.0 / 39.0,  // encoder ticks per revolution
 
-	3,
+	5,
 	0,
 	0.1,
 
-	40,
+	50,
 	0,
-	5,
+	0,
 
 	0.5,
 	1.0,

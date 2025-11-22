@@ -40,7 +40,7 @@ bool DriveDistance::isFinished() {
     Pose currentPose;
     odom_->getPose(&currentPose);
     return TimeoutCommand::isFinished() || 
-        (std::abs(targetX_ - currentPose.x) < 1.0 && std::abs(targetY_ - currentPose.y) < 1.0);
+        (std::abs(targetX_ - currentPose.x) < 2.0 && std::abs(targetY_ - currentPose.y) < 2.0);
 }
 
 void DriveDistance::end() {

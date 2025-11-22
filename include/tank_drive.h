@@ -35,6 +35,7 @@ class TankDrive {
 	void driveMotors(int leftSpeed, int rightSpeed);
 
   private:
+	bool reversed;
 	pros::MotorGroup leftMotorGroup;
 	pros::MotorGroup rightMotorGroup;
 	pros::Controller controller;
