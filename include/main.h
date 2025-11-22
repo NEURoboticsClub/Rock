@@ -44,6 +44,7 @@
 #include "transport.h"
 #include "commands/command_runner.h"
 #include "commands/drive_commands.h"
+#include "commands/subsystem_commands.h"
 
 /**
  * You should add more #includes here

@@ -15,21 +15,56 @@ DisengageIntake::DisengageIntake(Pneumatics &intakeLeft, Pneumatics &intakeRight
       }) {}
 
 // RunIntake Command Implementation
-RunIntake::RunIntake(Transport &intake, Transport &centerStageLower, uint32_t durationMs)
-    : TimeoutCommand(durationMs), intake(&intake), centerStageLower(&centerStageLower) {}
+RunIntake::RunIntake(Transport &intake, Transport &centerStageLower, 
+    Transport &centerStageUpper, uint32_t durationMs)
+    : TimeoutCommand(durationMs), intake(&intake), 
+      centerStageLower(&centerStageLower), centerStageUpper(&centerStageUpper) {}
 
 void RunIntake::initialize() {
     TimeoutCommand::initialize();
     intake->moveIn();
     centerStageLower->moveIn();
+    centerStageUpper->moveIn();
+}
+
+void RunIntake::end() {
+    intake->stop();
+    centerStageLower->stop();
+    centerStageUpper->stop();
+}
+
+// SortOutIntake Command Implementation
+SortOutIntake::SortOutIntake(Transport &intake, Transport &centerStageLower, uint32_t durationMs)
+    : TimeoutCommand(durationMs), intake(&intake), centerStageLower(&centerStageLower) {}
+
+void SortOutIntake::initialize() {
+    TimeoutCommand::initialize();
+    intake->moveIn();
+    centerStageLower->moveOut();
+}
+
+void SortOutIntake::end() {
+    intake->stop();
+    centerStageLower->stop();
 }
 
 // RunScoring Command Implementation
-RunScoring::RunScoring(Transport &scoring, Transport &centerStageUpper, uint32_t durationMs)
-    : TimeoutCommand(durationMs), scoring(&scoring), centerStageUpper(&centerStageUpper) {}
+RunScoring::RunScoring(Transport &intake, Transport &centerStageLower, 
+    Transport &centerStageUpper, Transport &hood, uint32_t durationMs)
+    : TimeoutCommand(durationMs), intake(&intake), centerStageLower(&centerStageLower),
+      centerStageUpper(&centerStageUpper), hood(&hood) {}
 
 void RunScoring::initialize() {
     TimeoutCommand::initialize();
-    scoring->moveIn();
+    intake->moveIn();
+    centerStageLower->moveIn();
     centerStageUpper->moveIn();
+    hood->moveIn();
+}
+
+void RunScoring::end() {
+    intake->stop();
+    centerStageLower->stop();
+    centerStageUpper->stop();
+    hood->stop();
 }

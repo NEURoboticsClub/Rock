@@ -34,11 +34,35 @@ class RunIntake : public TimeoutCommand {
      *
      * @param intake Reference to the Intake subsystem.
      * @param centerStageLower Reference to the Center Stage Lower subsystem.
+     * @param centerStageUpper Reference to the Center Stage Upper subsystem.
      * @param durationMs Duration in milliseconds for which to run the intake.
      */
-    RunIntake(Transport &intake, Transport &centerStageLower, uint32_t durationMs);
+    RunIntake(Transport &intake, Transport &centerStageLower, 
+        Transport &centerStageUpper, uint32_t durationMs);
 
     void initialize() override;
+    void end() override;
+
+  private:
+    Transport *intake;
+    Transport *centerStageLower;
+    Transport *centerStageUpper;
+};
+
+class SortOutIntake : public TimeoutCommand {
+  public:
+    /**
+     * Constructs a SortOut command with specified parameters, meant to run the
+     * sorting mechanism motors at a given speed.
+     *
+     * @param intake Reference to the Intake subsystem.
+     * @param centerStageLower Reference to the Center Stage Lower subsystem.
+     * @param durationMs Duration in milliseconds for which to run the sorting mechanism.
+     */
+    SortOutIntake(Transport &intake, Transport &centerStageLower, uint32_t durationMs);
+
+    void initialize() override;
+    void end() override;
 
   private:
     Transport *intake;
@@ -51,14 +75,21 @@ class RunScoring : public TimeoutCommand {
      * Constructs a RunScoring command with specified parameters, meant to run the
      * scoring mechanism motors at a given speed.
      *
-     * @param scoring Reference to the Scoring subsystem.
+     * @param intake Reference to the Intake subsystem.
+     * @param centerStageLower Reference to the Center Stage Lower subsystem.
      * @param centerStageUpper Reference to the Center Stage Upper subsystem.
+     * @param hood Reference to the Hood subsystem.
      * @param durationMs Duration in milliseconds for which to run the scoring mechanism.
      */
-    RunScoring(Transport &scoring, Transport &centerStageUpper, uint32_t durationMs);
+    RunScoring(Transport &intake, Transport &centerStageLower, Transport &centerStageUpper, 
+        Transport &hood, uint32_t durationMs);
 
     void initialize() override;
+    void end() override;
+
   private:
-    Transport *scoring;
+    Transport *intake;
+    Transport *centerStageLower;
     Transport *centerStageUpper;
+    Transport *hood;
 };
