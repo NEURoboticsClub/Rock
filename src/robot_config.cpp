@@ -92,19 +92,19 @@ TransportConfig hsky1Hood = {
 };
 
 PneumaticsConfig hsky1IntakeLeft = {
-	'b', // port
+	'a', // port
 	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
 	pros::E_CONTROLLER_DIGITAL_LEFT // retract
 };
 
 PneumaticsConfig hsky1IntakeRight = {
-	'b', // port
+	'a', // port
 	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
 	pros::E_CONTROLLER_DIGITAL_LEFT // retract
 };
 
 PneumaticsConfig hsky1Scoring = {
-	'a', // port
+	'b', // port
 	pros::E_CONTROLLER_DIGITAL_UP, // extend
 	pros::E_CONTROLLER_DIGITAL_DOWN // retract
 };
