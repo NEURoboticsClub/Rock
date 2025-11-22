@@ -58,6 +58,9 @@ void opcontrol() {
 	robotInit();
 
 	tankdrive.initialize(config.drivebase.driveStyle);
+	intakeLeft.initialize();
+	intakeRight.initialize();
+	scoring.initialize();
 	while (true) {
 	pros::MotorGroup* intake = new pros::MotorGroup({-2, 10, -13, 21, -6});
 	pros::MotorGroup* scoring = new pros::MotorGroup({-1});
@@ -83,9 +86,7 @@ void opcontrol() {
 	// centerStageLower.initialize();
 	// centerStageUpper.initialize();
 	// hood.initialize();
-	// intakeLeft.initialize();
-	// intakeRight.initialize();
-	// scoring.initialize();
+	
 
 	// std::queue<Command*> commandQueue;
 

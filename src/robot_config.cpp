@@ -46,8 +46,8 @@ AutonConstants hsky1AutonConstants = {
 };
 
 DrivebaseConfig hsky1Drivebase = {
-	{-4, 5, -16, 14}, // left
-	{9, -8, 20, -3}, // right
+	{-14,-11,12,13}, // left
+	{17,20,-18,-19}, // right
 	pros::E_MOTOR_BRAKE_COAST,
 	pros::E_MOTOR_GEAR_600,
 	ARCADE,
@@ -92,13 +92,13 @@ TransportConfig hsky1Hood = {
 };
 
 PneumaticsConfig hsky1IntakeLeft = {
-	'd', // port
+	'b', // port
 	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
 	pros::E_CONTROLLER_DIGITAL_LEFT // retract
 };
 
 PneumaticsConfig hsky1IntakeRight = {
-	'd', // port
+	'b', // port
 	pros::E_CONTROLLER_DIGITAL_RIGHT, // extend
 	pros::E_CONTROLLER_DIGITAL_LEFT // retract
 };
